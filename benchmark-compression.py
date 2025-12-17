@@ -10,6 +10,11 @@ import gzip
 import platform
 import time
 
+# Constants
+MEBIBYTE = 1024 * 1024
+INPUT_FILENAME = 'silesia.tar'
+OUTPUT_JSON = 'compression_benchmark_results.json'
+
 # Attempt to import non-standard libraries
 try:
     import zstandard as zstd
@@ -33,9 +38,6 @@ except ImportError:
     HAS_LZ4 = False
     print("Warning: 'lz4' module not found. Skipping lz4 tests.")
 
-INPUT_FILENAME = 'silesia.tar'
-OUTPUT_JSON = 'compression_benchmark_results.json'
-
 def get_file_content(filename):
     """Reads the entire file into memory to isolate compression performance from Disk I/O."""
     if not os.path.exists(filename):
@@ -48,56 +50,61 @@ def get_file_content(filename):
 
 def benchmark_algo(name, compress_func, decompress_func, data, version, level=None):
     """
-    Generic benchmark function with enhanced reporting.
-    (Note: original_size is not included in the returned dictionary)
+    Generic benchmark function. Calculates and reports throughput in MiB/s.
     """
     method_name = f"{name} (Level {level})" if level is not None else name
-    # Print start message, but keep it on one line for better console output
+    original_size = len(data)
+    size_mib = original_size / MEBIBYTE
+
     print(f"--> Testing {method_name}...", end='', flush=True)
 
-    # Compress
+    # --- Compression ---
     start_time = time.perf_counter()
     try:
         compressed_data = compress_func(data)
     except Exception as e:
-        # Clear the line and print error
         print(f"\r\nFailed to compress with {method_name}: {e}")
         return None
     comp_time = time.perf_counter() - start_time
     compressed_size = len(compressed_data)
 
-    # Decompress
+    # Calculate Compression Throughput
+    comp_throughput_mib_s = size_mib / comp_time if comp_time > 0 else 0
+
+    # --- Decompression ---
     start_time = time.perf_counter()
     try:
-        # Check integrity by ensuring decompressed data size is correct
         decompressed_data = decompress_func(compressed_data)
-        if len(decompressed_data) != len(data):
+        if len(decompressed_data) != original_size:
             raise RuntimeError("Decompression result size mismatch.")
     except Exception as e:
-        # Clear the line and print error
         print(f"\r\nFailed to decompress with {method_name}: {e}")
         return None
     decomp_time = time.perf_counter() - start_time
 
-    # --- ENHANCED REPORTING ---
-    original_size = len(data)
+    # Calculate Decompression Throughput
+    decomp_throughput_mib_s = size_mib / decomp_time if decomp_time > 0 else 0
+
+    # --- ENHANCED REPORTING (MiB/s) ---
     ratio = original_size / compressed_size
 
-    # Print the detailed results over the previous 'Testing...' message
     print(
         f"\r[Finished] {method_name:<18} | "
-        f"Comp: {comp_time:8.4f}s | "
-        f"Decomp: {decomp_time:8.4f}s | "
+        f"Comp Speed: {comp_throughput_mib_s:8.2f} MiB/s | "
+        f"Decomp Speed: {decomp_throughput_mib_s:8.2f} MiB/s | "
         f"Ratio: {ratio:5.2f}x"
     )
 
-    # The returned dictionary no longer includes "original_size_bytes"
+    # Return structure includes raw times (as requested) and compressed size
     return {
         "method": name,
         "level": level,
         "version": version,
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
+        # Adding throughput to JSON for completeness, even if times are there
+        "compression_throughput_mib_s": round(comp_throughput_mib_s, 2),
+        "decompression_throughput_mib_s": round(decomp_throughput_mib_s, 2),
         "compressed_size_bytes": compressed_size
     }
 
@@ -225,7 +232,6 @@ def main():
     # ---------------------------------------------------------
     print(f"\nWriting results to {OUTPUT_JSON}...")
 
-    # original_size_bytes is now explicitly defined in metadata
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "platform": platform.platform(),
