@@ -47,32 +47,47 @@ def get_file_content(filename):
 
 def benchmark_algo(name, compress_func, decompress_func, data, version, level=None):
     """
-    Generic benchmark function.
+    Generic benchmark function with enhanced reporting.
     """
     method_name = f"{name} (Level {level})" if level is not None else name
-    print(f"--> Testing {method_name}...", end='\r', flush=True)
+    # Print start message, but keep it on one line for better console output
+    print(f"--> Testing {method_name}...", end='', flush=True)
 
     # Compress
     start_time = time.perf_counter()
     try:
         compressed_data = compress_func(data)
     except Exception as e:
-        print(f"\nFailed to compress with {method_name}: {e}")
+        # Clear the line and print error
+        print(f"\r\nFailed to compress with {method_name}: {e}")
         return None
     comp_time = time.perf_counter() - start_time
-
     compressed_size = len(compressed_data)
 
     # Decompress
     start_time = time.perf_counter()
     try:
-        _ = decompress_func(compressed_data)
+        # Check integrity by ensuring decompressed data size is correct
+        decompressed_data = decompress_func(compressed_data)
+        if len(decompressed_data) != len(data):
+            raise RuntimeError("Decompression result size mismatch.")
     except Exception as e:
-        print(f"\nFailed to decompress with {method_name}: {e}")
+        # Clear the line and print error
+        print(f"\r\nFailed to decompress with {method_name}: {e}")
         return None
     decomp_time = time.perf_counter() - start_time
 
-    print(f"    Finished {method_name}: Ratio: {len(data)/compressed_size:.2f}x")
+    # --- ENHANCED REPORTING HERE ---
+    original_size = len(data)
+    ratio = original_size / compressed_size
+
+    # Print the detailed results over the previous 'Testing...' message
+    print(
+        f"\r[Finished] {method_name:<18} | "
+        f"Comp: {comp_time:8.4f}s | "
+        f"Decomp: {decomp_time:8.4f}s | "
+        f"Ratio: {ratio:5.2f}x"
+    )
 
     return {
         "method": name,
@@ -80,7 +95,7 @@ def benchmark_algo(name, compress_func, decompress_func, data, version, level=No
         "version": version,
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
-        "original_size_bytes": len(data),
+        "original_size_bytes": original_size,
         "compressed_size_bytes": compressed_size
     }
 
@@ -99,7 +114,7 @@ def main():
             lambda d, l=level: gzip.compress(d, compresslevel=l),
             gzip.decompress,
             original_data,
-            version=platform.python_version(), # Gzip is part of stdlib
+            version=platform.python_version(),
             level=level
         )
         if res: results.append(res)
@@ -115,7 +130,7 @@ def main():
             lambda d, l=level: bz2.compress(d, compresslevel=l),
             bz2.decompress,
             original_data,
-            version=platform.python_version(), # bz2 is part of stdlib
+            version=platform.python_version(),
             level=level
         )
         if res: results.append(res)
@@ -131,7 +146,7 @@ def main():
             lambda d, l=level: lzma.compress(d, preset=l),
             lzma.decompress,
             original_data,
-            version=platform.python_version(), # lzma is part of stdlib
+            version=platform.python_version(),
             level=level
         )
         if res: results.append(res)
@@ -143,7 +158,6 @@ def main():
     if HAS_ZSTD:
         print("\n--- Benchmarking Zstandard ---")
         try:
-            # Detect max level available on this system
             max_zstd = zstd.MAX_COMPRESSION_LEVEL
             zstd_ver = zstd.ZstdCompressor().version_number
         except:
@@ -151,8 +165,6 @@ def main():
             zstd_ver = "unknown"
 
         for level in range(1, max_zstd + 1):
-            # Using one-shot functions for simplicity in benchmarking
-            # Note: For strict control, we use ZstdCompressor(level=level).compress(data)
             def zstd_comp(d, l=level):
                 cctx = zstd.ZstdCompressor(level=l)
                 return cctx.compress(d)
@@ -177,13 +189,8 @@ def main():
     # ---------------------------------------------------------
     if HAS_LZ4:
         print("\n--- Benchmarking LZ4 ---")
-        # LZ4 Frame format supports levels 0-16.
-        # 0 is default (fast). 3-12 are usually HC (High Compression). 16 is max.
         lz4_ver = lz4.library_version_number()
-
-        # We will test a representative range. LZ4 levels aren't always strictly linear 1-9 like gzip.
-        # Level 0 is "fast". Levels 3+ trigger LZ4HC.
-        levels_to_test = list(range(0, 13)) + [16] # 0-12 and max (16)
+        levels_to_test = list(range(0, 13)) + [16]
 
         for level in levels_to_test:
              res = benchmark_algo(
@@ -198,11 +205,10 @@ def main():
 
     # ---------------------------------------------------------
     # 6. Snappy (External: python-snappy)
-    # Range: Single level (Snappy is designed for speed, not tunable levels)
+    # Range: Single level
     # ---------------------------------------------------------
     if HAS_SNAPPY:
         print("\n--- Benchmarking Snappy ---")
-        # Python-snappy usually wraps the C library which has no levels.
         try:
             snappy_ver = snappy.__version__
         except:
@@ -222,10 +228,23 @@ def main():
     # Save Results
     # ---------------------------------------------------------
     print(f"\nWriting results to {OUTPUT_JSON}...")
-    with open(OUTPUT_JSON, 'w') as f:
-        json.dump(results, f, indent=4)
+    # Add a section for environment details to the JSON file
+    metadata = {
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "platform": platform.platform(),
+        "python_version": platform.python_version(),
+        "original_file_size_bytes": len(original_data)
+    }
 
-    print("Done.")
+    final_output = {
+        "metadata": metadata,
+        "results": results
+    }
+
+    with open(OUTPUT_JSON, 'w') as f:
+        json.dump(final_output, f, indent=4)
+
+    print("\nBenchmark complete.")
 
 if __name__ == "__main__":
     main()
