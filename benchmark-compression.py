@@ -8,6 +8,7 @@ import bz2
 import lzma
 import gzip
 import platform
+import time
 
 # Attempt to import non-standard libraries
 try:
@@ -48,6 +49,7 @@ def get_file_content(filename):
 def benchmark_algo(name, compress_func, decompress_func, data, version, level=None):
     """
     Generic benchmark function with enhanced reporting.
+    (Note: original_size is not included in the returned dictionary)
     """
     method_name = f"{name} (Level {level})" if level is not None else name
     # Print start message, but keep it on one line for better console output
@@ -77,7 +79,7 @@ def benchmark_algo(name, compress_func, decompress_func, data, version, level=No
         return None
     decomp_time = time.perf_counter() - start_time
 
-    # --- ENHANCED REPORTING HERE ---
+    # --- ENHANCED REPORTING ---
     original_size = len(data)
     ratio = original_size / compressed_size
 
@@ -89,13 +91,13 @@ def benchmark_algo(name, compress_func, decompress_func, data, version, level=No
         f"Ratio: {ratio:5.2f}x"
     )
 
+    # The returned dictionary no longer includes "original_size_bytes"
     return {
         "method": name,
         "level": level,
         "version": version,
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
-        "original_size_bytes": original_size,
         "compressed_size_bytes": compressed_size
     }
 
@@ -105,7 +107,6 @@ def main():
 
     # ---------------------------------------------------------
     # 1. GZIP (Standard Library)
-    # Range: 1-9
     # ---------------------------------------------------------
     print("\n--- Benchmarking Gzip ---")
     for level in range(1, 10):
@@ -121,7 +122,6 @@ def main():
 
     # ---------------------------------------------------------
     # 2. BZIP2 (Standard Library)
-    # Range: 1-9
     # ---------------------------------------------------------
     print("\n--- Benchmarking Bzip2 ---")
     for level in range(1, 10):
@@ -137,7 +137,6 @@ def main():
 
     # ---------------------------------------------------------
     # 3. XZ / LZMA (Standard Library)
-    # Range: 0-9 (Presets)
     # ---------------------------------------------------------
     print("\n--- Benchmarking XZ (LZMA) ---")
     for level in range(0, 10):
@@ -153,7 +152,6 @@ def main():
 
     # ---------------------------------------------------------
     # 4. ZSTD (External: zstandard)
-    # Range: 1-22
     # ---------------------------------------------------------
     if HAS_ZSTD:
         print("\n--- Benchmarking Zstandard ---")
@@ -185,7 +183,6 @@ def main():
 
     # ---------------------------------------------------------
     # 5. LZ4 (External: lz4)
-    # Range: 0 (default/fast) to 16 (high compression)
     # ---------------------------------------------------------
     if HAS_LZ4:
         print("\n--- Benchmarking LZ4 ---")
@@ -205,7 +202,6 @@ def main():
 
     # ---------------------------------------------------------
     # 6. Snappy (External: python-snappy)
-    # Range: Single level
     # ---------------------------------------------------------
     if HAS_SNAPPY:
         print("\n--- Benchmarking Snappy ---")
@@ -228,7 +224,8 @@ def main():
     # Save Results
     # ---------------------------------------------------------
     print(f"\nWriting results to {OUTPUT_JSON}...")
-    # Add a section for environment details to the JSON file
+
+    # original_size_bytes is now explicitly defined in metadata
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "platform": platform.platform(),
@@ -244,7 +241,7 @@ def main():
     with open(OUTPUT_JSON, 'w') as f:
         json.dump(final_output, f, indent=4)
 
-    print("\nBenchmark complete.")
+    print("\nBenchmark complete. Results saved to", OUTPUT_JSON)
 
 if __name__ == "__main__":
     main()
