@@ -13,24 +13,23 @@ INPUT_FILENAME = 'silesia.tar'
 OUTPUT_JSON = 'compression_benchmark_results.json'
 MEBIBYTE = 1024 * 1024
 
-# Define the commands. If you have a specific version (e.g., /usr/local/bin/zstd-1.5),
-# you can update the path here.
+# CLI Tool mapping. Update these paths if your binaries are in non-standard locations.
 COMMANDS = {
     "gzip": "gzip",
     "bzip2": "bzip2",
     "xz": "xz",
     "zstd": "zstd",
     "lz4": "lz4",
-    "snappy": "snzip"  # snzip is the most common CLI for Snappy
+    "brotli": "brotli",
+    "snappy": "snzip"  # Common CLI for Snappy framing format
 }
 
 def get_tool_version(name, bin_path):
     """Attempts to get the version string from the CLI tool."""
     try:
-        # Most tools use --version, but some might use -V
+        # Most tools use --version; bzip2 and lz4 often prefer -V
         flag = "-V" if name in ["bzip2", "lz4"] else "--version"
         result = subprocess.run([bin_path, flag], capture_output=True, text=True, check=False)
-        # Combine stdout and stderr as some tools print version to stderr
         output = (result.stdout + result.stderr).split('\n')[0].strip()
         return output if output else "Unknown Version"
     except Exception:
@@ -38,7 +37,7 @@ def get_tool_version(name, bin_path):
 
 def run_cli_test(name, bin_path, data, level=None):
     """
-    Runs compression and decompression via CLI pipes.
+    Runs compression and decompression via CLI pipes using subprocess.
     """
     if not shutil.which(bin_path):
         print(f"Skipping {name}: binary '{bin_path}' not found in PATH.")
@@ -50,29 +49,44 @@ def run_cli_test(name, bin_path, data, level=None):
 
     print(f"--> Testing {method_label}...", end='', flush=True)
 
-    # 1. Compression
+    # 1. Compression Setup
     comp_cmd = [bin_path, "-c"] # -c outputs to stdout
     if level is not None:
-        comp_cmd.append(f"-{level}")
+        # Brotli requires -q for levels 10-11; others generally accept -#
+        if name == "brotli":
+            comp_cmd.extend(["-q", str(level)])
+        else:
+            comp_cmd.append(f"-{level}")
 
+    # Run Compression
     start = time.perf_counter()
-    proc = subprocess.run(comp_cmd, input=data, capture_output=True, check=True)
+    try:
+        proc = subprocess.run(comp_cmd, input=data, capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"\r\n[Error] {name} compression failed: {e}")
+        return None
     comp_time = time.perf_counter() - start
     compressed_data = proc.stdout
     compressed_size = len(compressed_data)
 
-    # 2. Decompression
+    # 2. Decompression Setup
     decomp_cmd = [bin_path, "-d", "-c"]
+
+    # Run Decompression
     start = time.perf_counter()
-    proc = subprocess.run(decomp_cmd, input=compressed_data, capture_output=True, check=True)
+    try:
+        proc = subprocess.run(decomp_cmd, input=compressed_data, capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"\r\n[Error] {name} decompression failed: {e}")
+        return None
     decomp_time = time.perf_counter() - start
 
     # 3. Validation
     if len(proc.stdout) != original_size:
-        print(f"\r\nError: {name} decompression size mismatch!")
+        print(f"\r\n[Error] {name} integrity check failed: size mismatch!")
         return None
 
-    # Stats
+    # Performance Stats
     comp_speed = size_mib / comp_time if comp_time > 0 else 0
     decomp_speed = size_mib / decomp_time if decomp_time > 0 else 0
     ratio = original_size / compressed_size
@@ -97,7 +111,7 @@ def run_cli_test(name, bin_path, data, level=None):
 
 def main():
     if not os.path.exists(INPUT_FILENAME):
-        print(f"Error: {INPUT_FILENAME} not found.")
+        print(f"Error: {INPUT_FILENAME} not found. Please provide a test file.")
         return
 
     with open(INPUT_FILENAME, 'rb') as f:
@@ -106,37 +120,43 @@ def main():
     results = []
 
     # Benchmark Gzip (1-9)
-    print("\n--- Gzip CLI ---")
+    print("\n--- Gzip ---")
     for l in range(1, 10):
         res = run_cli_test("gzip", COMMANDS["gzip"], data, level=l)
         if res: results.append(res)
 
     # Benchmark Bzip2 (1-9)
-    print("\n--- Bzip2 CLI ---")
+    print("\n--- Bzip2 ---")
     for l in range(1, 10):
         res = run_cli_test("bzip2", COMMANDS["bzip2"], data, level=l)
         if res: results.append(res)
 
     # Benchmark XZ (0-9)
-    print("\n--- XZ CLI ---")
+    print("\n--- XZ ---")
     for l in range(0, 10):
         res = run_cli_test("xz", COMMANDS["xz"], data, level=l)
         if res: results.append(res)
 
     # Benchmark Zstd (1-19)
-    print("\n--- Zstandard CLI ---")
+    print("\n--- Zstandard ---")
     for l in range(1, 20):
         res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
         if res: results.append(res)
 
     # Benchmark LZ4 (1-12)
-    print("\n--- LZ4 CLI ---")
+    print("\n--- LZ4 ---")
     for l in range(1, 13):
         res = run_cli_test("lz4", COMMANDS["lz4"], data, level=l)
         if res: results.append(res)
 
-    # Benchmark Snappy (usually snzip)
-    print("\n--- Snappy (snzip) CLI ---")
+    # Benchmark Brotli (1-11)
+    print("\n--- Brotli ---")
+    for l in range(1, 12):
+        res = run_cli_test("brotli", COMMANDS["brotli"], data, level=l)
+        if res: results.append(res)
+
+    # Benchmark Snappy (snzip)
+    print("\n--- Snappy (snzip) ---")
     res = run_cli_test("snappy", COMMANDS["snappy"], data)
     if res: results.append(res)
 
@@ -150,7 +170,7 @@ def main():
     with open(OUTPUT_JSON, 'w') as f:
         json.dump({"metadata": metadata, "results": results}, f, indent=4)
 
-    print(f"\nBenchmark complete. Saved to {OUTPUT_JSON}")
+    print(f"\nBenchmark complete. Detailed logs saved to {OUTPUT_JSON}")
 
 if __name__ == "__main__":
     main()
