@@ -1,253 +1,156 @@
 #!/usr/bin/env python3
 
+import subprocess
 import time
 import json
 import os
 import sys
-import bz2
-import lzma
-import gzip
 import platform
-import time
+import shutil
 
-# Constants
-MEBIBYTE = 1024 * 1024
+# --- Configuration ---
 INPUT_FILENAME = 'silesia.tar'
 OUTPUT_JSON = 'compression_benchmark_results.json'
+MEBIBYTE = 1024 * 1024
 
-# Attempt to import non-standard libraries
-try:
-    import zstandard as zstd
-    HAS_ZSTD = True
-except ImportError:
-    HAS_ZSTD = False
-    print("Warning: 'zstandard' module not found. Skipping zstd tests.")
+# Define the commands. If you have a specific version (e.g., /usr/local/bin/zstd-1.5),
+# you can update the path here.
+COMMANDS = {
+    "gzip": "gzip",
+    "bzip2": "bzip2",
+    "xz": "xz",
+    "zstd": "zstd",
+    "lz4": "lz4",
+    "snappy": "snzip"  # snzip is the most common CLI for Snappy
+}
 
-try:
-    import snappy
-    HAS_SNAPPY = True
-except ImportError:
-    HAS_SNAPPY = False
-    print("Warning: 'python-snappy' module not found. Skipping snappy tests.")
+def get_tool_version(name, bin_path):
+    """Attempts to get the version string from the CLI tool."""
+    try:
+        # Most tools use --version, but some might use -V
+        flag = "-V" if name in ["bzip2", "lz4"] else "--version"
+        result = subprocess.run([bin_path, flag], capture_output=True, text=True, check=False)
+        # Combine stdout and stderr as some tools print version to stderr
+        output = (result.stdout + result.stderr).split('\n')[0].strip()
+        return output if output else "Unknown Version"
+    except Exception:
+        return "Version Check Failed"
 
-try:
-    import lz4.frame
-    import lz4
-    HAS_LZ4 = True
-except ImportError:
-    HAS_LZ4 = False
-    print("Warning: 'lz4' module not found. Skipping lz4 tests.")
-
-def get_file_content(filename):
-    """Reads the entire file into memory to isolate compression performance from Disk I/O."""
-    if not os.path.exists(filename):
-        print(f"Error: Input file '{filename}' not found.")
-        sys.exit(1)
-
-    print(f"Loading {filename} into memory...")
-    with open(filename, 'rb') as f:
-        return f.read()
-
-def benchmark_algo(name, compress_func, decompress_func, data, version, level=None):
+def run_cli_test(name, bin_path, data, level=None):
     """
-    Generic benchmark function. Calculates and reports throughput in MiB/s.
+    Runs compression and decompression via CLI pipes.
     """
-    method_name = f"{name} (Level {level})" if level is not None else name
+    if not shutil.which(bin_path):
+        print(f"Skipping {name}: binary '{bin_path}' not found in PATH.")
+        return None
+
+    method_label = f"{name} (Level {level})" if level is not None else name
     original_size = len(data)
     size_mib = original_size / MEBIBYTE
 
-    print(f"--> Testing {method_name}...", end='', flush=True)
+    print(f"--> Testing {method_label}...", end='', flush=True)
 
-    # --- Compression ---
-    start_time = time.perf_counter()
-    try:
-        compressed_data = compress_func(data)
-    except Exception as e:
-        print(f"\r\nFailed to compress with {method_name}: {e}")
-        return None
-    comp_time = time.perf_counter() - start_time
+    # 1. Compression
+    comp_cmd = [bin_path, "-c"] # -c outputs to stdout
+    if level is not None:
+        comp_cmd.append(f"-{level}")
+
+    start = time.perf_counter()
+    proc = subprocess.run(comp_cmd, input=data, capture_output=True, check=True)
+    comp_time = time.perf_counter() - start
+    compressed_data = proc.stdout
     compressed_size = len(compressed_data)
 
-    # Calculate Compression Throughput
-    comp_throughput_mib_s = size_mib / comp_time if comp_time > 0 else 0
+    # 2. Decompression
+    decomp_cmd = [bin_path, "-d", "-c"]
+    start = time.perf_counter()
+    proc = subprocess.run(decomp_cmd, input=compressed_data, capture_output=True, check=True)
+    decomp_time = time.perf_counter() - start
 
-    # --- Decompression ---
-    start_time = time.perf_counter()
-    try:
-        decompressed_data = decompress_func(compressed_data)
-        if len(decompressed_data) != original_size:
-            raise RuntimeError("Decompression result size mismatch.")
-    except Exception as e:
-        print(f"\r\nFailed to decompress with {method_name}: {e}")
+    # 3. Validation
+    if len(proc.stdout) != original_size:
+        print(f"\r\nError: {name} decompression size mismatch!")
         return None
-    decomp_time = time.perf_counter() - start_time
 
-    # Calculate Decompression Throughput
-    decomp_throughput_mib_s = size_mib / decomp_time if decomp_time > 0 else 0
-
-    # --- ENHANCED REPORTING (MiB/s) ---
+    # Stats
+    comp_speed = size_mib / comp_time if comp_time > 0 else 0
+    decomp_speed = size_mib / decomp_time if decomp_time > 0 else 0
     ratio = original_size / compressed_size
 
     print(
-        f"\r[Finished] {method_name:<18} | "
-        f"Comp Speed: {comp_throughput_mib_s:8.2f} MiB/s | "
-        f"Decomp Speed: {decomp_throughput_mib_s:8.2f} MiB/s | "
+        f"\r[Finished] {method_label:<18} | "
+        f"Comp: {comp_speed:8.2f} MiB/s | "
+        f"Decomp: {decomp_speed:8.2f} MiB/s | "
         f"Ratio: {ratio:5.2f}x"
     )
 
-    # Return structure includes raw times (as requested) and compressed size
     return {
         "method": name,
         "level": level,
-        "version": version,
+        "version": get_tool_version(name, bin_path),
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
-        # Adding throughput to JSON for completeness, even if times are there
-        "compression_throughput_mib_s": round(comp_throughput_mib_s, 2),
-        "decompression_throughput_mib_s": round(decomp_throughput_mib_s, 2),
+        "compression_throughput_mib_s": round(comp_speed, 2),
+        "decompression_throughput_mib_s": round(decomp_speed, 2),
         "compressed_size_bytes": compressed_size
     }
 
 def main():
-    original_data = get_file_content(INPUT_FILENAME)
+    if not os.path.exists(INPUT_FILENAME):
+        print(f"Error: {INPUT_FILENAME} not found.")
+        return
+
+    with open(INPUT_FILENAME, 'rb') as f:
+        data = f.read()
+
     results = []
 
-    # ---------------------------------------------------------
-    # 1. GZIP (Standard Library)
-    # ---------------------------------------------------------
-    print("\n--- Benchmarking Gzip ---")
-    for level in range(1, 10):
-        res = benchmark_algo(
-            "gzip",
-            lambda d, l=level: gzip.compress(d, compresslevel=l),
-            gzip.decompress,
-            original_data,
-            version=platform.python_version(),
-            level=level
-        )
+    # Benchmark Gzip (1-9)
+    print("\n--- Gzip CLI ---")
+    for l in range(1, 10):
+        res = run_cli_test("gzip", COMMANDS["gzip"], data, level=l)
         if res: results.append(res)
 
-    # ---------------------------------------------------------
-    # 2. BZIP2 (Standard Library)
-    # ---------------------------------------------------------
-    print("\n--- Benchmarking Bzip2 ---")
-    for level in range(1, 10):
-        res = benchmark_algo(
-            "bzip2",
-            lambda d, l=level: bz2.compress(d, compresslevel=l),
-            bz2.decompress,
-            original_data,
-            version=platform.python_version(),
-            level=level
-        )
+    # Benchmark Bzip2 (1-9)
+    print("\n--- Bzip2 CLI ---")
+    for l in range(1, 10):
+        res = run_cli_test("bzip2", COMMANDS["bzip2"], data, level=l)
         if res: results.append(res)
 
-    # ---------------------------------------------------------
-    # 3. XZ / LZMA (Standard Library)
-    # ---------------------------------------------------------
-    print("\n--- Benchmarking XZ (LZMA) ---")
-    for level in range(0, 10):
-        res = benchmark_algo(
-            "xz",
-            lambda d, l=level: lzma.compress(d, preset=l),
-            lzma.decompress,
-            original_data,
-            version=platform.python_version(),
-            level=level
-        )
+    # Benchmark XZ (0-9)
+    print("\n--- XZ CLI ---")
+    for l in range(0, 10):
+        res = run_cli_test("xz", COMMANDS["xz"], data, level=l)
         if res: results.append(res)
 
-    # ---------------------------------------------------------
-    # 4. ZSTD (External: zstandard)
-    # ---------------------------------------------------------
-    if HAS_ZSTD:
-        print("\n--- Benchmarking Zstandard ---")
-        try:
-            max_zstd = zstd.MAX_COMPRESSION_LEVEL
-            zstd_ver = zstd.ZstdCompressor().version_number
-        except:
-            max_zstd = 19
-            zstd_ver = "unknown"
-
-        for level in range(1, max_zstd + 1):
-            def zstd_comp(d, l=level):
-                cctx = zstd.ZstdCompressor(level=l)
-                return cctx.compress(d)
-
-            def zstd_decomp(d):
-                dctx = zstd.ZstdDecompressor()
-                return dctx.decompress(d)
-
-            res = benchmark_algo(
-                "zstd",
-                zstd_comp,
-                zstd_decomp,
-                original_data,
-                version=str(zstd_ver),
-                level=level
-            )
-            if res: results.append(res)
-
-    # ---------------------------------------------------------
-    # 5. LZ4 (External: lz4)
-    # ---------------------------------------------------------
-    if HAS_LZ4:
-        print("\n--- Benchmarking LZ4 ---")
-        lz4_ver = lz4.library_version_number()
-        levels_to_test = list(range(0, 13)) + [16]
-
-        for level in levels_to_test:
-             res = benchmark_algo(
-                "lz4",
-                lambda d, l=level: lz4.frame.compress(d, compression_level=l),
-                lz4.frame.decompress,
-                original_data,
-                version=str(lz4_ver),
-                level=level
-            )
-             if res: results.append(res)
-
-    # ---------------------------------------------------------
-    # 6. Snappy (External: python-snappy)
-    # ---------------------------------------------------------
-    if HAS_SNAPPY:
-        print("\n--- Benchmarking Snappy ---")
-        try:
-            snappy_ver = snappy.__version__
-        except:
-            snappy_ver = "unknown"
-
-        res = benchmark_algo(
-            "snappy",
-            snappy.compress,
-            snappy.uncompress,
-            original_data,
-            version=str(snappy_ver),
-            level="default"
-        )
+    # Benchmark Zstd (1-19)
+    print("\n--- Zstandard CLI ---")
+    for l in range(1, 20):
+        res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
         if res: results.append(res)
 
-    # ---------------------------------------------------------
-    # Save Results
-    # ---------------------------------------------------------
-    print(f"\nWriting results to {OUTPUT_JSON}...")
+    # Benchmark LZ4 (1-12)
+    print("\n--- LZ4 CLI ---")
+    for l in range(1, 13):
+        res = run_cli_test("lz4", COMMANDS["lz4"], data, level=l)
+        if res: results.append(res)
 
+    # Benchmark Snappy (usually snzip)
+    print("\n--- Snappy (snzip) CLI ---")
+    res = run_cli_test("snappy", COMMANDS["snappy"], data)
+    if res: results.append(res)
+
+    # Metadata and Save
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "platform": platform.platform(),
-        "python_version": platform.python_version(),
-        "original_file_size_bytes": len(original_data)
-    }
-
-    final_output = {
-        "metadata": metadata,
-        "results": results
+        "original_file_size_bytes": len(data)
     }
 
     with open(OUTPUT_JSON, 'w') as f:
-        json.dump(final_output, f, indent=4)
+        json.dump({"metadata": metadata, "results": results}, f, indent=4)
 
-    print("\nBenchmark complete. Results saved to", OUTPUT_JSON)
+    print(f"\nBenchmark complete. Saved to {OUTPUT_JSON}")
 
 if __name__ == "__main__":
     main()
