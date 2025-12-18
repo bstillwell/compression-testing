@@ -7,12 +7,14 @@ import os
 import sys
 import platform
 import shutil
+import argparse
 
 # --- Configuration ---
 INPUT_FILENAME = 'silesia.tar'
 OUTPUT_JSON = 'compression_benchmark_results.json'
 MEBIBYTE = 1024 * 1024
 
+# CLI Tool mapping
 COMMANDS = {
     "gzip": "gzip",
     "bzip2": "bzip2",
@@ -31,7 +33,6 @@ def get_cpu_model():
         elif platform.system() == "Darwin":
             return subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"]).decode().strip()
         elif platform.system() == "Linux":
-            # Look for the 'model name' line in /proc/cpuinfo
             with open("/proc/cpuinfo", "r") as f:
                 for line in f:
                     if "model name" in line:
@@ -125,9 +126,28 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     }
 
 def main():
+    parser = argparse.ArgumentParser(description="Benchmark compression algorithms using CLI tools.")
+    parser.add_argument(
+        "--algos",
+        type=str,
+        help="Comma-separated list of algorithms to test (e.g., gzip,zstd,lz4). Default: all."
+    )
+    args = parser.parse_args()
+
     if not os.path.exists(INPUT_FILENAME):
         print(f"Error: {INPUT_FILENAME} not found.")
         return
+
+    # Parse comma-separated string into a list and validate
+    if args.algos:
+        selected_algos = [a.strip().lower() for a in args.algos.split(',')]
+        invalid = [a for a in selected_algos if a not in COMMANDS]
+        if invalid:
+            print(f"Error: Unknown algorithms: {', '.join(invalid)}")
+            print(f"Available choices: {', '.join(COMMANDS.keys())}")
+            return
+    else:
+        selected_algos = list(COMMANDS.keys())
 
     with open(INPUT_FILENAME, 'rb') as f:
         data = f.read()
@@ -135,46 +155,49 @@ def main():
     results = []
 
     # --- Zstandard (Standard & Ultra) ---
-    print("\n--- Zstandard ---")
-    for l in range(1, 20):
-        res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
-        if res: results.append(res)
-    for l in range(20, 23):
-        res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l, extra_args=["--ultra"])
-        if res: results.append(res)
-
-    # --- Others ---
-    algorithms = [
-        ("Gzip", "gzip", range(1, 10)),
-        ("Bzip2", "bzip2", range(1, 10)),
-        ("XZ", "xz", range(0, 10)),
-        ("LZ4", "lz4", range(1, 13)),
-        ("Brotli", "brotli", range(1, 12))
-    ]
-
-    for title, cmd, l_range in algorithms:
-        print(f"\n--- {title} ---")
-        for l in l_range:
-            res = run_cli_test(cmd, COMMANDS[cmd], data, level=l)
+    if "zstd" in selected_algos:
+        print("\n--- Zstandard ---")
+        for l in range(1, 20):
+            res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
+            if res: results.append(res)
+        for l in range(20, 23):
+            res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l, extra_args=["--ultra"])
             if res: results.append(res)
 
-    print("\n--- Snappy ---")
-    res = run_cli_test("snappy", COMMANDS["snappy"], data)
-    if res: results.append(res)
+    # --- Generic Algorithm Loops ---
+    standard_loops = [
+        ("gzip", "Gzip", range(1, 10)),
+        ("bzip2", "Bzip2", range(1, 10)),
+        ("xz", "XZ", range(0, 10)),
+        ("lz4", "LZ4", range(1, 13)),
+        ("brotli", "Brotli", range(1, 12))
+    ]
 
-    # --- Save with CPU Metadata ---
+    for key, title, l_range in standard_loops:
+        if key in selected_algos:
+            print(f"\n--- {title} ---")
+            for l in l_range:
+                res = run_cli_test(key, COMMANDS[key], data, level=l)
+                if res: results.append(res)
+
+    # --- Snappy Logic ---
+    if "snappy" in selected_algos:
+        print("\n--- Snappy ---")
+        res = run_cli_test("snappy", COMMANDS["snappy"], data)
+        if res: results.append(res)
+
+    # --- Metadata and Save ---
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "platform": platform.platform(),
-        "cpu_model": get_cpu_model(),  # <--- New field
-        "python_version": platform.python_version(),
+        "cpu_model": get_cpu_model(),
         "original_file_size_bytes": len(data)
     }
 
     with open(OUTPUT_JSON, 'w') as f:
         json.dump({"metadata": metadata, "results": results}, f, indent=4)
 
-    print(f"\nBenchmark complete. Results (including CPU: {metadata['cpu_model']}) saved to {OUTPUT_JSON}")
+    print(f"\nBenchmark complete. Results saved to {OUTPUT_JSON}")
 
 if __name__ == "__main__":
     main()
