@@ -23,6 +23,23 @@ COMMANDS = {
     "snappy": "snzip"
 }
 
+def get_cpu_model():
+    """Returns the CPU model name across different platforms."""
+    try:
+        if platform.system() == "Windows":
+            return subprocess.check_output(["wmic", "cpu", "get", "name"]).decode().strip().split('\n')[1]
+        elif platform.system() == "Darwin":
+            return subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"]).decode().strip()
+        elif platform.system() == "Linux":
+            # Look for the 'model name' line in /proc/cpuinfo
+            with open("/proc/cpuinfo", "r") as f:
+                for line in f:
+                    if "model name" in line:
+                        return line.split(":")[1].strip()
+    except Exception:
+        pass
+    return platform.processor() or "Unknown CPU"
+
 def get_tool_version(name, bin_path):
     """Attempts to get the version string from the CLI tool."""
     try:
@@ -34,9 +51,7 @@ def get_tool_version(name, bin_path):
         return "Version Check Failed"
 
 def run_cli_test(name, bin_path, data, level=None, extra_args=None):
-    """
-    Runs compression/decompression via CLI pipes using subprocess.
-    """
+    """Runs compression/decompression via CLI pipes."""
     if not shutil.which(bin_path):
         print(f"Skipping {name}: binary '{bin_path}' not found.")
         return None
@@ -51,7 +66,7 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
 
     print(f"--> Testing {method_label}...", end='', flush=True)
 
-    # 1. Compression Setup
+    # 1. Compression
     comp_cmd = [bin_path, "-c"]
     if extra_args:
         comp_cmd.extend(extra_args)
@@ -61,7 +76,6 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
         else:
             comp_cmd.append(f"-{level}")
 
-    # Run Compression
     start = time.perf_counter()
     try:
         proc = subprocess.run(comp_cmd, input=data, capture_output=True, check=True)
@@ -72,10 +86,8 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     compressed_data = proc.stdout
     compressed_size = len(compressed_data)
 
-    # 2. Decompression Setup
+    # 2. Decompression
     decomp_cmd = [bin_path, "-d", "-c"]
-
-    # Run Decompression
     start = time.perf_counter()
     try:
         proc = subprocess.run(decomp_cmd, input=compressed_data, capture_output=True, check=True)
@@ -84,7 +96,7 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
         return None
     decomp_time = time.perf_counter() - start
 
-    # 3. Validation
+    # 3. Validation & Stats
     if len(proc.stdout) != original_size:
         print(f"\r\n[Error] {method_label} integrity check failed!")
         return None
@@ -124,63 +136,45 @@ def main():
 
     # --- Zstandard (Standard & Ultra) ---
     print("\n--- Zstandard ---")
-
-    # Standard levels: 1 to 19
     for l in range(1, 20):
         res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
         if res: results.append(res)
-
-    # Ultra levels: 20 to 22 (Requires --ultra flag)
     for l in range(20, 23):
         res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l, extra_args=["--ultra"])
         if res: results.append(res)
 
-    # --- Gzip ---
-    print("\n--- Gzip ---")
-    for l in range(1, 10):
-        res = run_cli_test("gzip", COMMANDS["gzip"], data, level=l)
-        if res: results.append(res)
+    # --- Others ---
+    algorithms = [
+        ("Gzip", "gzip", range(1, 10)),
+        ("Bzip2", "bzip2", range(1, 10)),
+        ("XZ", "xz", range(0, 10)),
+        ("LZ4", "lz4", range(1, 13)),
+        ("Brotli", "brotli", range(1, 12))
+    ]
 
-    # --- Bzip2 ---
-    print("\n--- Bzip2 ---")
-    for l in range(1, 10):
-        res = run_cli_test("bzip2", COMMANDS["bzip2"], data, level=l)
-        if res: results.append(res)
+    for title, cmd, l_range in algorithms:
+        print(f"\n--- {title} ---")
+        for l in l_range:
+            res = run_cli_test(cmd, COMMANDS[cmd], data, level=l)
+            if res: results.append(res)
 
-    # --- XZ ---
-    print("\n--- XZ ---")
-    for l in range(0, 10):
-        res = run_cli_test("xz", COMMANDS["xz"], data, level=l)
-        if res: results.append(res)
-
-    # --- LZ4 ---
-    print("\n--- LZ4 ---")
-    for l in range(1, 13):
-        res = run_cli_test("lz4", COMMANDS["lz4"], data, level=l)
-        if res: results.append(res)
-
-    # --- Brotli ---
-    print("\n--- Brotli ---")
-    for l in range(1, 12):
-        res = run_cli_test("brotli", COMMANDS["brotli"], data, level=l)
-        if res: results.append(res)
-
-    # --- Snappy ---
     print("\n--- Snappy ---")
     res = run_cli_test("snappy", COMMANDS["snappy"], data)
     if res: results.append(res)
 
-    # Metadata and Save
+    # --- Save with CPU Metadata ---
     metadata = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "platform": platform.platform(),
+        "cpu_model": get_cpu_model(),  # <--- New field
+        "python_version": platform.python_version(),
         "original_file_size_bytes": len(data)
     }
 
     with open(OUTPUT_JSON, 'w') as f:
         json.dump({"metadata": metadata, "results": results}, f, indent=4)
 
-    print(f"\nBenchmark complete. Results saved to {OUTPUT_JSON}")
+    print(f"\nBenchmark complete. Results (including CPU: {metadata['cpu_model']}) saved to {OUTPUT_JSON}")
 
 if __name__ == "__main__":
     main()
