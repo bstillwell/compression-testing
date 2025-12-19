@@ -49,7 +49,7 @@ def get_tool_version(name, bin_path):
         output = (result.stdout + result.stderr).split('\n')[0].strip()
         return output if output else "Unknown Version"
     except Exception:
-        return "Version Check Failed"
+        return f"Version Check Failed ({bin_path})"
 
 def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     """Runs compression/decompression via CLI pipes."""
@@ -57,10 +57,15 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
         print(f"Skipping {name}: binary '{bin_path}' not found.")
         return None
 
+    # Get version once to use in labeling if testing multiple versions
+    version_str = get_tool_version(name, bin_path)
+
     label_suffix = ""
     if extra_args:
         label_suffix = f" ({' '.join(extra_args)})"
-    method_label = f"{name}{label_suffix}" + (f" Lvl {level}" if level is not None else "")
+
+    # Include version in the console label to distinguish multiple zstd versions
+    method_label = f"{name} [{version_str.split()[-1]}]{label_suffix}" + (f" Lvl {level}" if level is not None else "")
 
     original_size = len(data)
     size_mib = original_size / MEBIBYTE
@@ -107,7 +112,7 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     ratio = original_size / compressed_size
 
     print(
-        f"\r[Finished] {method_label:<25} | "
+        f"\r[Finished] {method_label:<35} | "
         f"Comp: {comp_speed:8.2f} MiB/s | "
         f"Decomp: {decomp_speed:8.2f} MiB/s | "
         f"Ratio: {ratio:5.2f}x"
@@ -115,9 +120,10 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
 
     return {
         "method": name,
+        "binary_path": bin_path,
         "level": level,
         "flags": extra_args,
-        "version": get_tool_version(name, bin_path),
+        "version": version_str,
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
         "compression_throughput_mib_s": round(comp_speed, 2),
@@ -132,37 +138,42 @@ def main():
         type=str,
         help="Comma-separated list of algorithms to test (e.g., gzip,zstd,lz4). Default: all."
     )
+    parser.add_argument(
+        "--zstd-bins",
+        type=str,
+        help="Comma-separated list of paths to specific zstd binaries to compare."
+    )
     args = parser.parse_args()
 
     if not os.path.exists(INPUT_FILENAME):
         print(f"Error: {INPUT_FILENAME} not found.")
         return
 
-    # Parse comma-separated string into a list and validate
     if args.algos:
         selected_algos = [a.strip().lower() for a in args.algos.split(',')]
-        invalid = [a for a in selected_algos if a not in COMMANDS]
-        if invalid:
-            print(f"Error: Unknown algorithms: {', '.join(invalid)}")
-            print(f"Available choices: {', '.join(COMMANDS.keys())}")
-            return
     else:
         selected_algos = list(COMMANDS.keys())
+
+    # Handle multiple Zstd binaries
+    zstd_binaries = ["zstd"] # Default
+    if args.zstd_bins:
+        zstd_binaries = [b.strip() for b in args.zstd_bins.split(',')]
 
     with open(INPUT_FILENAME, 'rb') as f:
         data = f.read()
 
     results = []
 
-    # --- Zstandard (Standard & Ultra) ---
+    # --- Zstandard (Logic adjusted for multiple binaries) ---
     if "zstd" in selected_algos:
-        print("\n--- Zstandard ---")
-        for l in range(1, 20):
-            res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l)
-            if res: results.append(res)
-        for l in range(20, 23):
-            res = run_cli_test("zstd", COMMANDS["zstd"], data, level=l, extra_args=["--ultra"])
-            if res: results.append(res)
+        for z_bin in zstd_binaries:
+            print(f"\n--- Zstandard (Binary: {z_bin}) ---")
+            for l in range(1, 20):
+                res = run_cli_test("zstd", z_bin, data, level=l)
+                if res: results.append(res)
+            for l in range(20, 23):
+                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--ultra"])
+                if res: results.append(res)
 
     # --- Generic Algorithm Loops ---
     standard_loops = [
