@@ -60,12 +60,8 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     # Get version once to use in labeling if testing multiple versions
     version_str = get_tool_version(name, bin_path)
 
-    label_suffix = ""
-    if extra_args:
-        label_suffix = f" ({' '.join(extra_args)})"
-
     # Include version in the console label to distinguish multiple zstd versions
-    method_label = f"{name} [{version_str.split()[-1]}]{label_suffix}" + (f" Lvl {level}" if level is not None else "")
+    method_label = f"{name} [{version_str.split()[-1]}]" + (f" Lvl {level}" if level is not None else "")
 
     original_size = len(data)
     size_mib = original_size / MEBIBYTE
@@ -122,7 +118,6 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
         "method": name,
         "binary_path": bin_path,
         "level": level,
-        "flags": extra_args,
         "version": version_str,
         "compression_time_seconds": round(comp_time, 4),
         "decompression_time_seconds": round(decomp_time, 4),
@@ -169,10 +164,10 @@ def main():
         for z_bin in zstd_binaries:
             print(f"\n--- Zstandard (Binary: {z_bin}) ---")
             for l in range(1, 20):
-                res = run_cli_test("zstd", z_bin, data, level=l)
+                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--threads=1"])
                 if res: results.append(res)
             for l in range(20, 23):
-                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--ultra"])
+                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--threads=1", "--ultra"])
                 if res: results.append(res)
 
     # --- Generic Algorithm Loops ---
