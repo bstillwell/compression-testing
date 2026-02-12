@@ -70,8 +70,9 @@ def get_tool_version(name, bin_path):
         # Apple gzip 475
         "gzip": r"(.*gzip [\d\.]+)",
 
+        # *** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***
         # *** lz4 v1.10.0 64-bit multithread, by Yann Collet ***
-        "lz4": r"lz4 v(\d+\.\d+\.\d+) ",
+        "lz4": r" v(\d+\.\d+\.\d+)",
 
         # *** zstd command line interface 64-bits v1.4.5, by Yann Collet ***
         # *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***
