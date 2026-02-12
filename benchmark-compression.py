@@ -44,9 +44,14 @@ def get_cpu_model():
 
 def get_tool_version(name, bin_path):
     """Attempts to get the version string from the CLI tool."""
+
+    # bzip2 hangs on macOS waiting for input if we use the --version flag, so
+    # use --help instead
+    version_flag = "--help" if name == "bzip2" else "--version"
+
     try:
         result = subprocess.run(
-            [bin_path, "--version"],
+            [bin_path, version_flag],
             capture_output=True,
             text=True,
             check=False
