@@ -8,6 +8,7 @@ import sys
 import platform
 import shutil
 import argparse
+import re
 
 # --- Configuration ---
 INPUT_FILENAME = 'silesia.tar'
@@ -44,12 +45,47 @@ def get_cpu_model():
 def get_tool_version(name, bin_path):
     """Attempts to get the version string from the CLI tool."""
     try:
-        flag = "-V" if name in ["bzip2", "lz4"] else "--version"
-        result = subprocess.run([bin_path, flag], capture_output=True, text=True, check=False)
-        output = (result.stdout + result.stderr).split('\n')[0].strip()
-        return output if output else "Unknown Version"
+        result = subprocess.run(
+            [bin_path, "--version"],
+            capture_output=True,
+            text=True,
+            check=False
+        )
     except Exception:
         return f"Version Check Failed ({bin_path})"
+
+    # Only grab the first line of the combined stdout/stderr since both are
+    # used depending on the tool
+    first_line = (result.stdout + result.stderr).splitlines()[0]
+
+    # Define regex patterns for each tool
+    patterns = {
+        # brotli 1.1.0
+        "brotli": r"brotli (\d+\.\d+\.\d+)",
+
+        # bzip2, a block-sorting file compressor.  Version 1.0.8, 13-Jul-2019.
+        "bzip2": r"Version (\d+\.\d+\.\d+)",
+
+        # gzip 1.13
+        # Apple gzip 475
+        "gzip": r"(.*gzip [\d\.]+)",
+
+        # *** lz4 v1.10.0 64-bit multithread, by Yann Collet ***
+        "lz4": r"lz4 v(\d+\.\d+\.\d+) ",
+
+        # *** zstd command line interface 64-bits v1.4.5, by Yann Collet ***
+        # *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***
+        "zstd": r" v(\d+\.\d+\.\d+),",
+    }
+
+    # Try to extract a clean version number
+    if name in patterns:
+        match = re.search(patterns[name], first_line)
+        if match:
+            return match.group(1)
+
+    # Return the first line of output if our matching fails
+    return first_line
 
 def run_cli_test(name, bin_path, data, level=None, extra_args=None):
     """Runs compression/decompression via CLI pipes."""
