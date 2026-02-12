@@ -87,7 +87,7 @@ def get_tool_version(name, bin_path):
     # Return the first line of output if our matching fails
     return first_line
 
-def run_cli_test(name, bin_path, data, level=None, extra_args=None):
+def run_cli_test(name, bin_path, data, level=None):
     """Runs compression/decompression via CLI pipes."""
     if not shutil.which(bin_path):
         print(f"Skipping {name}: binary '{bin_path}' not found.")
@@ -106,11 +106,22 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
 
     # 1. Compression
     comp_cmd = [bin_path, "-c"]
-    if extra_args:
-        comp_cmd.extend(extra_args)
     if level is not None:
         if name == "brotli":
             comp_cmd.extend(["-q", str(level)])
+        elif name == "zstd":
+            # Make sure zstd uses a single thread
+            comp_cmd.extend(["--threads=1"])
+
+            # Convert negative values to fast levels
+            if level < 0:
+                comp_cmd.extend([f"--fast={abs(level)}"])
+            # Ultra levels are 20-22
+            elif level > 19:
+                comp_cmd.extend([f"-{level}", "--ultra"])
+            # All other levels
+            else:
+                comp_cmd.append(f"-{level}")
         else:
             comp_cmd.append(f"-{level}")
 
@@ -198,11 +209,11 @@ def main():
     if "zstd" in selected_algos:
         for z_bin in zstd_binaries:
             print(f"\n--- Zstandard (Binary: {z_bin}) ---")
-            for l in range(1, 20):
-                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--threads=1"])
-                if res: results.append(res)
-            for l in range(20, 23):
-                res = run_cli_test("zstd", z_bin, data, level=l, extra_args=["--threads=1", "--ultra"])
+
+            # Zstd needs --fast=# for negative levels, -# for levels 1-19,
+            # and -# with --ultra for levels 20-22
+            for l in list(range(-9, 0)) + list(range(1, 23)):
+                res = run_cli_test("zstd", z_bin, data, level=l)
                 if res: results.append(res)
 
     # --- Generic Algorithm Loops ---
