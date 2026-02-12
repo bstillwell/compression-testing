@@ -152,7 +152,6 @@ def run_cli_test(name, bin_path, data, level=None, extra_args=None):
 
     return {
         "method": name,
-        "binary_path": bin_path,
         "level": level,
         "version": version_str,
         "compression_time_seconds": round(comp_time, 4),
