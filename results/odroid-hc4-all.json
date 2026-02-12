@@ -499,7 +499,7 @@
         {
             "method": "xz",
             "level": 0,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 46.1057,
             "decompression_time_seconds": 8.4111,
             "compression_throughput_mib_s": 4.38,
@@ -509,7 +509,7 @@
         {
             "method": "xz",
             "level": 1,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 66.6575,
             "decompression_time_seconds": 8.3291,
             "compression_throughput_mib_s": 3.03,
@@ -519,7 +519,7 @@
         {
             "method": "xz",
             "level": 2,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 101.3711,
             "decompression_time_seconds": 7.9505,
             "compression_throughput_mib_s": 1.99,
@@ -529,7 +529,7 @@
         {
             "method": "xz",
             "level": 3,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 154.2634,
             "decompression_time_seconds": 7.9523,
             "compression_throughput_mib_s": 1.31,
@@ -539,7 +539,7 @@
         {
             "method": "xz",
             "level": 4,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 213.8254,
             "decompression_time_seconds": 7.6464,
             "compression_throughput_mib_s": 0.95,
@@ -549,7 +549,7 @@
         {
             "method": "xz",
             "level": 5,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 276.4655,
             "decompression_time_seconds": 7.4392,
             "compression_throughput_mib_s": 0.73,
@@ -559,7 +559,7 @@
         {
             "method": "xz",
             "level": 6,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 326.2441,
             "decompression_time_seconds": 7.423,
             "compression_throughput_mib_s": 0.62,
@@ -569,7 +569,7 @@
         {
             "method": "xz",
             "level": 7,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 340.6571,
             "decompression_time_seconds": 7.3442,
             "compression_throughput_mib_s": 0.59,
@@ -579,7 +579,7 @@
         {
             "method": "xz",
             "level": 8,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 351.2565,
             "decompression_time_seconds": 7.525,
             "compression_throughput_mib_s": 0.58,
@@ -589,7 +589,7 @@
         {
             "method": "xz",
             "level": 9,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 349.8276,
             "decompression_time_seconds": 7.3233,
             "compression_throughput_mib_s": 0.58,
@@ -599,7 +599,7 @@
         {
             "method": "lz4",
             "level": 1,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 3.4019,
             "decompression_time_seconds": 1.6608,
             "compression_throughput_mib_s": 59.42,
@@ -609,7 +609,7 @@
         {
             "method": "lz4",
             "level": 2,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 3.3912,
             "decompression_time_seconds": 1.6425,
             "compression_throughput_mib_s": 59.61,
@@ -619,7 +619,7 @@
         {
             "method": "lz4",
             "level": 3,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 14.4123,
             "decompression_time_seconds": 1.6577,
             "compression_throughput_mib_s": 14.03,
@@ -629,7 +629,7 @@
         {
             "method": "lz4",
             "level": 4,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 18.3541,
             "decompression_time_seconds": 1.6055,
             "compression_throughput_mib_s": 11.01,
@@ -639,7 +639,7 @@
         {
             "method": "lz4",
             "level": 5,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 20.6428,
             "decompression_time_seconds": 1.5824,
             "compression_throughput_mib_s": 9.79,
@@ -649,7 +649,7 @@
         {
             "method": "lz4",
             "level": 6,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 27.0299,
             "decompression_time_seconds": 1.6619,
             "compression_throughput_mib_s": 7.48,
@@ -659,7 +659,7 @@
         {
             "method": "lz4",
             "level": 7,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 32.3822,
             "decompression_time_seconds": 1.5944,
             "compression_throughput_mib_s": 6.24,
@@ -669,7 +669,7 @@
         {
             "method": "lz4",
             "level": 8,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 36.7495,
             "decompression_time_seconds": 1.6657,
             "compression_throughput_mib_s": 5.5,
@@ -679,7 +679,7 @@
         {
             "method": "lz4",
             "level": 9,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 41.0886,
             "decompression_time_seconds": 1.5873,
             "compression_throughput_mib_s": 4.92,
@@ -689,7 +689,7 @@
         {
             "method": "lz4",
             "level": 10,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 56.0088,
             "decompression_time_seconds": 1.6302,
             "compression_throughput_mib_s": 3.61,
@@ -699,7 +699,7 @@
         {
             "method": "lz4",
             "level": 11,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 92.9071,
             "decompression_time_seconds": 1.6004,
             "compression_throughput_mib_s": 2.18,
@@ -709,7 +709,7 @@
         {
             "method": "lz4",
             "level": 12,
-            "version": "*** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***",
+            "version": "1.9.4",
             "compression_time_seconds": 100.2824,
             "decompression_time_seconds": 1.5867,
             "compression_throughput_mib_s": 2.02,

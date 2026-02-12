@@ -499,7 +499,7 @@
         {
             "method": "xz",
             "level": 0,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 15.1515,
             "decompression_time_seconds": 4.3416,
             "compression_throughput_mib_s": 13.34,
@@ -509,7 +509,7 @@
         {
             "method": "xz",
             "level": 1,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 24.4181,
             "decompression_time_seconds": 3.9599,
             "compression_throughput_mib_s": 8.28,
@@ -519,7 +519,7 @@
         {
             "method": "xz",
             "level": 2,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 40.5054,
             "decompression_time_seconds": 3.8585,
             "compression_throughput_mib_s": 4.99,
@@ -529,7 +529,7 @@
         {
             "method": "xz",
             "level": 3,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 65.7357,
             "decompression_time_seconds": 3.8957,
             "compression_throughput_mib_s": 3.08,
@@ -539,7 +539,7 @@
         {
             "method": "xz",
             "level": 4,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 79.6436,
             "decompression_time_seconds": 3.9142,
             "compression_throughput_mib_s": 2.54,
@@ -549,7 +549,7 @@
         {
             "method": "xz",
             "level": 5,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 104.7083,
             "decompression_time_seconds": 3.7589,
             "compression_throughput_mib_s": 1.93,
@@ -559,7 +559,7 @@
         {
             "method": "xz",
             "level": 6,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 122.3972,
             "decompression_time_seconds": 3.7379,
             "compression_throughput_mib_s": 1.65,
@@ -569,7 +569,7 @@
         {
             "method": "xz",
             "level": 7,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 129.3113,
             "decompression_time_seconds": 3.7855,
             "compression_throughput_mib_s": 1.56,
@@ -579,7 +579,7 @@
         {
             "method": "xz",
             "level": 8,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 135.3615,
             "decompression_time_seconds": 3.7954,
             "compression_throughput_mib_s": 1.49,
@@ -589,7 +589,7 @@
         {
             "method": "xz",
             "level": 9,
-            "version": "xz (XZ Utils) 5.4.5",
+            "version": "5.4.5",
             "compression_time_seconds": 138.1261,
             "decompression_time_seconds": 3.7989,
             "compression_throughput_mib_s": 1.46,
