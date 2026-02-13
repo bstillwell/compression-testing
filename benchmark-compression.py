@@ -119,12 +119,19 @@ def run_cli_test(name, bin_path, data, level=None):
         if name == "brotli":
             comp_cmd.extend(["-q", str(level)])
         elif name == "zstd":
-            # Make sure zstd uses a single thread
-            comp_cmd.extend(["--threads=1"])
+            # Make sure zstd uses a single thread (when version >= 1.1.3)
+            zstd_version = tuple(map(int, version_str.split('.')))
+            if zstd_version >= (1, 1, 3):
+                comp_cmd.extend(["-T1"])
 
-            # Convert negative values to fast levels
+            # Test the fast compression levels
             if level < 0:
-                comp_cmd.extend([f"--fast={abs(level)}"])
+                if zstd_version >= (1, 3, 4):
+                    comp_cmd.extend([f"--fast={abs(level)}"])
+                else:
+                    # Skip fast levels when version < 1.3.4
+                    print(f"\r[Skipped]  {method_label:<35} | fast levels weren't added until zstd 1.3.4")
+                    return None
             # Ultra levels are 20-22
             elif level > 19:
                 comp_cmd.extend([f"-{level}", "--ultra"])
