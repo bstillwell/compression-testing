@@ -228,7 +228,7 @@ def main():
         ("bzip2", "Bzip2", range(1, 10)),
         ("xz", "XZ", range(0, 10)),
         ("lz4", "LZ4", range(1, 13)),
-        ("brotli", "Brotli", range(1, 12))
+        ("brotli", "Brotli", range(1, 10))
     ]
 
     for key, title, l_range in standard_loops:
