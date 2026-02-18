@@ -114,10 +114,12 @@ def run_cli_test(name, bin_path, data, level=None):
     print(f"--> Testing {method_label}...", end='', flush=True)
 
     # 1. Compression
-    comp_cmd = [bin_path, "-c"]
     if level is not None:
-        if name == "brotli":
-            comp_cmd.extend(["-q", str(level)])
+        comp_cmd = [bin_path, "-c", f"-{level}"]
+
+        if name == "xz":
+            # Make sure xz uses a single thread
+            comp_cmd.extend(["-T1"])
         elif name == "zstd":
             # Make sure zstd uses a single thread (when version >= 1.1.3)
             zstd_version = tuple(map(int, version_str.split('.')))
@@ -126,13 +128,10 @@ def run_cli_test(name, bin_path, data, level=None):
 
             # Ultra levels are 20-22
             elif level > 19:
-                comp_cmd.extend([f"-{level}", "--ultra"])
-
-            # All other levels
-            else:
-                comp_cmd.append(f"-{level}")
-        else:
-            comp_cmd.append(f"-{level}")
+                comp_cmd.extend(["--ultra"])
+    else:
+        print(f"\r\n[Error] No compression level specified")
+        return None
 
     start = time.perf_counter()
     try:
