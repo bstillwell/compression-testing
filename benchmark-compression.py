@@ -117,9 +117,14 @@ def run_cli_test(name, bin_path, data, level=None):
     if level is not None:
         comp_cmd = [bin_path, "-c", f"-{level}"]
 
-        if name in ["lz4", "xz"]:
-            # Make sure these algorithms use a single thread
+        if name == "xz":
+            # Make sure xz uses a single thread
             comp_cmd.extend(["-T1"])
+        elif name == "lz4":
+            # Make sure lz4 uses a single thread (when version >= 1.10.0)
+            lz4_version = tuple(map(int, version_str.split('.')))
+            if lz4_version >= (1, 10, 0):
+                comp_cmd.extend(["-T1"])
         elif name == "zstd":
             # Make sure zstd uses a single thread (when version >= 1.1.3)
             zstd_version = tuple(map(int, version_str.split('.')))
