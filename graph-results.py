@@ -8,12 +8,35 @@ import glob
 import os
 
 # --- Configuration ---
-# Use glob to find all json files in the results directory
 INPUT_PATTERN = 'results/*.json'
 OUTPUT_DIR = 'graphs'
 
+def create_plot(df, x_col, y_col, title, output_path, cpu_model):
+    """Generates and saves a specific benchmark plot."""
+    plt.figure(figsize=(10, 5))
+    sns.set_theme(style="whitegrid")
+
+    # Using sort=False to maintain 'Level' order on the line
+    sns.lineplot(
+        data=df, x=x_col, y=y_col, hue="Unique_Label",
+        style="Unique_Label", markers=True, dashes=False,
+        sort=False, linewidth=2, markersize=7, palette="bright"
+    )
+
+    plt.title(f"{title}\n{cpu_model}", fontsize=14, pad=15)
+    plt.xlabel("Throughput (MiB/s)")
+    plt.ylabel("Compression Ratio")
+
+    plt.xlim(left=0)
+    plt.ylim(bottom=1)
+    plt.legend(title="Algorithm", bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+
+    plt.savefig(output_path, dpi=150)
+    plt.close()
+
 def process_file(file_path):
-    # 1. Load Data
+    # Load Data
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -21,57 +44,48 @@ def process_file(file_path):
         print(f"Skipping {file_path}: {e}")
         return
 
-    # 2. Prepare DataFrame
-    records = []
-    # Using .get() for safety in case keys are missing in some files
+    # Extract Metadata
     metadata = data.get('metadata', {})
     original_size = metadata.get('original_file_size_bytes', 1)
     cpu_model = metadata.get('cpu_model', 'Unknown CPU')
+    file_base = os.path.splitext(os.path.basename(file_path))[0]
 
+    comp_records = []
+    decomp_records = []
+
+    # Parse Results
     for res in data.get('results', []):
         version_short = res['version'].split(' ')[-1] if res.get('version') else "?"
-        unique_label = f"{res['method']} ({version_short})"
+        label = f"{res['method']} ({version_short})"
+        ratio = original_size / res['compressed_size_bytes']
+        level = res['level'] if res['level'] is not None else 0
 
-        records.append({
-            "Algorithm": res['method'],
-            "Unique_Label": unique_label,
-            "Level": res['level'] if res['level'] is not None else 0,
-            "Ratio": original_size / res['compressed_size_bytes'],
-            "Speed": res['compression_throughput_mib_s'],
+        # Build Compression dataset
+        comp_records.append({
+            "Unique_Label": label, "Level": level, "Ratio": ratio,
+            "Speed": res.get('compression_throughput_mib_s', 0)
         })
 
-    if not records:
-        print(f"No results found in {file_path}")
-        return
+        # Build Decompression dataset
+        if 'decompression_throughput_mib_s' in res:
+            decomp_records.append({
+                "Unique_Label": label, "Level": level, "Ratio": ratio,
+                "Speed": res.get('decompression_throughput_mib_s', 0)
+            })
 
-    df = pd.DataFrame(records).sort_values(by=["Unique_Label", "Level"])
+    # Generate Compression Graph
+    if comp_records:
+        df_comp = pd.DataFrame(comp_records).sort_values(by=["Unique_Label", "Level"])
+        out_path = os.path.join(OUTPUT_DIR, f"{file_base}_compression.png")
+        create_plot(df_comp, "Speed", "Ratio", "Compression", out_path, cpu_model)
 
-    # 3. Setup Plot
-    sns.set_theme(style="whitegrid")
-    plt.figure(figsize=(10, 5))
+    # Generate Decompression Graph
+    if decomp_records:
+        df_decomp = pd.DataFrame(decomp_records).sort_values(by=["Unique_Label", "Level"])
+        out_path = os.path.join(OUTPUT_DIR, f"{file_base}_decompression.png")
+        create_plot(df_decomp, "Speed", "Ratio", "Decompression", out_path, cpu_model)
 
-    plot = sns.lineplot(
-        data=df, x="Speed", y="Ratio", hue="Unique_Label",
-        style="Unique_Label", markers=True, dashes=False,
-        sort=False, linewidth=2, markersize=7, palette="bright"
-    )
-
-    # 4. Formatting
-    file_name = os.path.basename(file_path)
-    plt.title(f"Efficiency: {file_name}\nCPU: {cpu_model}", fontsize=14)
-    plt.xlabel("Compression Throughput (MiB/s)")
-    plt.ylabel("Compression Ratio")
-    plt.xlim(left=0)
-    plt.ylim(bottom=1)
-    plt.legend(title="Algorithm", bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.tight_layout()
-
-    # 5. Save using the original filename but change extension to .png
-    output_name = os.path.splitext(file_name)[0] + ".png"
-    output_path = os.path.join(OUTPUT_DIR, output_name)
-    plt.savefig(output_path, dpi=150)
-    plt.close() # Important: Close plot to free memory during loops
-    print(f"Processed: {file_name} -> {output_path}")
+    print(f"Finished processing: {file_base}")
 
 def main():
     # Create output directory if it doesn't exist
@@ -79,13 +93,14 @@ def main():
         os.makedirs(OUTPUT_DIR)
 
     files = glob.glob(INPUT_PATTERN)
-
     if not files:
         print(f"No JSON files found in {INPUT_PATTERN}")
         return
 
     for file in files:
         process_file(file)
+
+    print("\nAll graphs generated in the 'graphs/' directory.")
 
 if __name__ == "__main__":
     main()
