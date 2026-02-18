@@ -1,0 +1,1330 @@
+{
+    "metadata": {
+        "timestamp": "2026-02-18 07:24:41",
+        "platform": "Linux-6.17.0-14-generic-x86_64-with-glibc2.42",
+        "cpu_model": "AMD Ryzen 7 7800X3D 8-Core Processor",
+        "original_file_size_bytes": 211957760
+    },
+    "results": [
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.1.2",
+            "compression_time_seconds": 0.6167,
+            "decompression_time_seconds": 0.3201,
+            "compression_throughput_mib_s": 327.76,
+            "decompression_throughput_mib_s": 631.39,
+            "compressed_size_bytes": 73659698
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.1.2",
+            "compression_time_seconds": 0.6601,
+            "decompression_time_seconds": 0.322,
+            "compression_throughput_mib_s": 306.22,
+            "decompression_throughput_mib_s": 627.82,
+            "compressed_size_bytes": 70169126
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.1.2",
+            "compression_time_seconds": 0.7973,
+            "decompression_time_seconds": 0.323,
+            "compression_throughput_mib_s": 253.53,
+            "decompression_throughput_mib_s": 625.72,
+            "compressed_size_bytes": 66996638
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.1.2",
+            "compression_time_seconds": 0.9167,
+            "decompression_time_seconds": 0.331,
+            "compression_throughput_mib_s": 220.5,
+            "decompression_throughput_mib_s": 610.67,
+            "compressed_size_bytes": 65996445
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.1.2",
+            "compression_time_seconds": 1.2171,
+            "decompression_time_seconds": 0.3305,
+            "compression_throughput_mib_s": 166.08,
+            "decompression_throughput_mib_s": 611.61,
+            "compressed_size_bytes": 65002585
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.1.2",
+            "compression_time_seconds": 1.5129,
+            "decompression_time_seconds": 0.3295,
+            "compression_throughput_mib_s": 133.61,
+            "decompression_throughput_mib_s": 613.4,
+            "compressed_size_bytes": 62977717
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.1.2",
+            "compression_time_seconds": 1.8239,
+            "decompression_time_seconds": 0.322,
+            "compression_throughput_mib_s": 110.83,
+            "decompression_throughput_mib_s": 627.75,
+            "compressed_size_bytes": 61971909
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.1.2",
+            "compression_time_seconds": 2.4356,
+            "decompression_time_seconds": 0.3118,
+            "compression_throughput_mib_s": 82.99,
+            "decompression_throughput_mib_s": 648.36,
+            "compressed_size_bytes": 61026745
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.1.2",
+            "compression_time_seconds": 2.909,
+            "decompression_time_seconds": 0.3211,
+            "compression_throughput_mib_s": 69.49,
+            "decompression_throughput_mib_s": 629.5,
+            "compressed_size_bytes": 60415169
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.1.2",
+            "compression_time_seconds": 3.4497,
+            "decompression_time_seconds": 0.3136,
+            "compression_throughput_mib_s": 58.6,
+            "decompression_throughput_mib_s": 644.53,
+            "compressed_size_bytes": 60173143
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.1.2",
+            "compression_time_seconds": 3.8327,
+            "decompression_time_seconds": 0.3162,
+            "compression_throughput_mib_s": 52.74,
+            "decompression_throughput_mib_s": 639.35,
+            "compressed_size_bytes": 59523410
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.1.2",
+            "compression_time_seconds": 5.4262,
+            "decompression_time_seconds": 0.3134,
+            "compression_throughput_mib_s": 37.25,
+            "decompression_throughput_mib_s": 644.91,
+            "compressed_size_bytes": 59120636
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.1.2",
+            "compression_time_seconds": 6.6643,
+            "decompression_time_seconds": 0.3083,
+            "compression_throughput_mib_s": 30.33,
+            "decompression_throughput_mib_s": 655.72,
+            "compressed_size_bytes": 58795871
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.1.2",
+            "compression_time_seconds": 10.5337,
+            "decompression_time_seconds": 0.3105,
+            "compression_throughput_mib_s": 19.19,
+            "decompression_throughput_mib_s": 651.11,
+            "compressed_size_bytes": 58439118
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.1.2",
+            "compression_time_seconds": 14.059,
+            "decompression_time_seconds": 0.3034,
+            "compression_throughput_mib_s": 14.38,
+            "decompression_throughput_mib_s": 666.21,
+            "compressed_size_bytes": 58008011
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.1.2",
+            "compression_time_seconds": 15.4986,
+            "decompression_time_seconds": 0.3053,
+            "compression_throughput_mib_s": 13.04,
+            "decompression_throughput_mib_s": 662.08,
+            "compressed_size_bytes": 57262110
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.1.2",
+            "compression_time_seconds": 18.9875,
+            "decompression_time_seconds": 0.3104,
+            "compression_throughput_mib_s": 10.65,
+            "decompression_throughput_mib_s": 651.18,
+            "compressed_size_bytes": 56676922
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.1.2",
+            "compression_time_seconds": 23.6744,
+            "decompression_time_seconds": 0.3027,
+            "compression_throughput_mib_s": 8.54,
+            "decompression_throughput_mib_s": 667.86,
+            "compressed_size_bytes": 55290666
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.1.2",
+            "compression_time_seconds": 30.3709,
+            "decompression_time_seconds": 0.313,
+            "compression_throughput_mib_s": 6.66,
+            "decompression_throughput_mib_s": 645.88,
+            "compressed_size_bytes": 54010910
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.1.2",
+            "compression_time_seconds": 38.4441,
+            "decompression_time_seconds": 0.3464,
+            "compression_throughput_mib_s": 5.26,
+            "decompression_throughput_mib_s": 583.47,
+            "compressed_size_bytes": 53027989
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.1.2",
+            "compression_time_seconds": 47.67,
+            "decompression_time_seconds": 0.3551,
+            "compression_throughput_mib_s": 4.24,
+            "decompression_throughput_mib_s": 569.18,
+            "compressed_size_bytes": 52747966
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.1.2",
+            "compression_time_seconds": 57.2105,
+            "decompression_time_seconds": 0.3637,
+            "compression_throughput_mib_s": 3.53,
+            "decompression_throughput_mib_s": 555.8,
+            "compressed_size_bytes": 52720748
+        },
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.3.2",
+            "compression_time_seconds": 0.5367,
+            "decompression_time_seconds": 0.3088,
+            "compression_throughput_mib_s": 376.66,
+            "decompression_throughput_mib_s": 654.65,
+            "compressed_size_bytes": 73655248
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.3.2",
+            "compression_time_seconds": 0.6325,
+            "decompression_time_seconds": 0.3178,
+            "compression_throughput_mib_s": 319.56,
+            "decompression_throughput_mib_s": 636.05,
+            "compressed_size_bytes": 70165478
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.3.2",
+            "compression_time_seconds": 0.776,
+            "decompression_time_seconds": 0.3389,
+            "compression_throughput_mib_s": 260.49,
+            "decompression_throughput_mib_s": 596.37,
+            "compressed_size_bytes": 66994244
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.3.2",
+            "compression_time_seconds": 0.8676,
+            "decompression_time_seconds": 0.3294,
+            "compression_throughput_mib_s": 232.99,
+            "decompression_throughput_mib_s": 613.69,
+            "compressed_size_bytes": 66301469
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.3.2",
+            "compression_time_seconds": 1.2734,
+            "decompression_time_seconds": 0.3384,
+            "compression_throughput_mib_s": 158.74,
+            "decompression_throughput_mib_s": 597.36,
+            "compressed_size_bytes": 64751859
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.3.2",
+            "compression_time_seconds": 1.5954,
+            "decompression_time_seconds": 0.3258,
+            "compression_throughput_mib_s": 126.7,
+            "decompression_throughput_mib_s": 620.42,
+            "compressed_size_bytes": 62687169
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.3.2",
+            "compression_time_seconds": 1.9915,
+            "decompression_time_seconds": 0.322,
+            "compression_throughput_mib_s": 101.5,
+            "decompression_throughput_mib_s": 627.86,
+            "compressed_size_bytes": 61760747
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.3.2",
+            "compression_time_seconds": 2.4564,
+            "decompression_time_seconds": 0.3189,
+            "compression_throughput_mib_s": 82.29,
+            "decompression_throughput_mib_s": 633.84,
+            "compressed_size_bytes": 61021418
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.3.2",
+            "compression_time_seconds": 2.6384,
+            "decompression_time_seconds": 0.3163,
+            "compression_throughput_mib_s": 76.61,
+            "decompression_throughput_mib_s": 639.1,
+            "compressed_size_bytes": 60691367
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.3.2",
+            "compression_time_seconds": 3.4616,
+            "decompression_time_seconds": 0.323,
+            "compression_throughput_mib_s": 58.4,
+            "decompression_throughput_mib_s": 625.84,
+            "compressed_size_bytes": 60168399
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.3.2",
+            "compression_time_seconds": 3.8866,
+            "decompression_time_seconds": 0.3195,
+            "compression_throughput_mib_s": 52.01,
+            "decompression_throughput_mib_s": 632.71,
+            "compressed_size_bytes": 59518411
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.3.2",
+            "compression_time_seconds": 5.7496,
+            "decompression_time_seconds": 0.3094,
+            "compression_throughput_mib_s": 35.16,
+            "decompression_throughput_mib_s": 653.35,
+            "compressed_size_bytes": 59116274
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.3.2",
+            "compression_time_seconds": 6.6952,
+            "decompression_time_seconds": 0.3125,
+            "compression_throughput_mib_s": 30.19,
+            "decompression_throughput_mib_s": 646.74,
+            "compressed_size_bytes": 58791473
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.3.2",
+            "compression_time_seconds": 10.5462,
+            "decompression_time_seconds": 0.3137,
+            "compression_throughput_mib_s": 19.17,
+            "decompression_throughput_mib_s": 644.4,
+            "compressed_size_bytes": 58436080
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.3.2",
+            "compression_time_seconds": 13.5223,
+            "decompression_time_seconds": 0.3071,
+            "compression_throughput_mib_s": 14.95,
+            "decompression_throughput_mib_s": 658.26,
+            "compressed_size_bytes": 57980233
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.3.2",
+            "compression_time_seconds": 15.2148,
+            "decompression_time_seconds": 0.3076,
+            "compression_throughput_mib_s": 13.29,
+            "decompression_throughput_mib_s": 657.2,
+            "compressed_size_bytes": 57259025
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.3.2",
+            "compression_time_seconds": 20.3795,
+            "decompression_time_seconds": 0.3049,
+            "compression_throughput_mib_s": 9.92,
+            "decompression_throughput_mib_s": 662.97,
+            "compressed_size_bytes": 56227514
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.3.2",
+            "compression_time_seconds": 24.641,
+            "decompression_time_seconds": 0.3121,
+            "compression_throughput_mib_s": 8.2,
+            "decompression_throughput_mib_s": 647.68,
+            "compressed_size_bytes": 55398807
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.3.2",
+            "compression_time_seconds": 30.4907,
+            "decompression_time_seconds": 0.3105,
+            "compression_throughput_mib_s": 6.63,
+            "decompression_throughput_mib_s": 650.94,
+            "compressed_size_bytes": 54012439
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.3.2",
+            "compression_time_seconds": 38.4479,
+            "decompression_time_seconds": 0.3327,
+            "compression_throughput_mib_s": 5.26,
+            "decompression_throughput_mib_s": 607.49,
+            "compressed_size_bytes": 53031031
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.3.2",
+            "compression_time_seconds": 47.9626,
+            "decompression_time_seconds": 0.3503,
+            "compression_throughput_mib_s": 4.21,
+            "decompression_throughput_mib_s": 577.08,
+            "compressed_size_bytes": 52748741
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.3.2",
+            "compression_time_seconds": 57.4767,
+            "decompression_time_seconds": 0.3744,
+            "compression_throughput_mib_s": 3.52,
+            "decompression_throughput_mib_s": 539.91,
+            "compressed_size_bytes": 52715973
+        },
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.4.0",
+            "compression_time_seconds": 0.5329,
+            "decompression_time_seconds": 0.2943,
+            "compression_throughput_mib_s": 379.33,
+            "decompression_throughput_mib_s": 686.81,
+            "compressed_size_bytes": 73587156
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.4.0",
+            "compression_time_seconds": 0.614,
+            "decompression_time_seconds": 0.3162,
+            "compression_throughput_mib_s": 329.2,
+            "decompression_throughput_mib_s": 639.32,
+            "compressed_size_bytes": 69803063
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.4.0",
+            "compression_time_seconds": 0.7621,
+            "decompression_time_seconds": 0.3083,
+            "compression_throughput_mib_s": 265.23,
+            "decompression_throughput_mib_s": 655.6,
+            "compressed_size_bytes": 66796931
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.4.0",
+            "compression_time_seconds": 0.8576,
+            "decompression_time_seconds": 0.3145,
+            "compression_throughput_mib_s": 235.69,
+            "decompression_throughput_mib_s": 642.72,
+            "compressed_size_bytes": 65647091
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.4.0",
+            "compression_time_seconds": 1.3006,
+            "decompression_time_seconds": 0.3145,
+            "compression_throughput_mib_s": 155.42,
+            "decompression_throughput_mib_s": 642.65,
+            "compressed_size_bytes": 64013540
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.4.0",
+            "compression_time_seconds": 1.6116,
+            "decompression_time_seconds": 0.3134,
+            "compression_throughput_mib_s": 125.43,
+            "decompression_throughput_mib_s": 644.98,
+            "compressed_size_bytes": 62915370
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.4.0",
+            "compression_time_seconds": 2.2342,
+            "decompression_time_seconds": 0.3016,
+            "compression_throughput_mib_s": 90.47,
+            "decompression_throughput_mib_s": 670.19,
+            "compressed_size_bytes": 61358026
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.4.0",
+            "compression_time_seconds": 2.8243,
+            "decompression_time_seconds": 0.303,
+            "compression_throughput_mib_s": 71.57,
+            "decompression_throughput_mib_s": 667.02,
+            "compressed_size_bytes": 60779686
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.4.0",
+            "compression_time_seconds": 3.5977,
+            "decompression_time_seconds": 0.2936,
+            "compression_throughput_mib_s": 56.19,
+            "decompression_throughput_mib_s": 688.53,
+            "compressed_size_bytes": 60211373
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.4.0",
+            "compression_time_seconds": 3.9548,
+            "decompression_time_seconds": 0.2989,
+            "compression_throughput_mib_s": 51.11,
+            "decompression_throughput_mib_s": 676.22,
+            "compressed_size_bytes": 59538510
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.4.0",
+            "compression_time_seconds": 4.3768,
+            "decompression_time_seconds": 0.2938,
+            "compression_throughput_mib_s": 46.18,
+            "decompression_throughput_mib_s": 688.03,
+            "compressed_size_bytes": 59246198
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.4.0",
+            "compression_time_seconds": 6.7112,
+            "decompression_time_seconds": 0.3116,
+            "compression_throughput_mib_s": 30.12,
+            "decompression_throughput_mib_s": 648.8,
+            "compressed_size_bytes": 58780285
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.4.0",
+            "compression_time_seconds": 9.2485,
+            "decompression_time_seconds": 0.2916,
+            "compression_throughput_mib_s": 21.86,
+            "decompression_throughput_mib_s": 693.26,
+            "compressed_size_bytes": 58093190
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.4.0",
+            "compression_time_seconds": 10.2997,
+            "decompression_time_seconds": 0.2882,
+            "compression_throughput_mib_s": 19.63,
+            "decompression_throughput_mib_s": 701.35,
+            "compressed_size_bytes": 57582458
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.4.0",
+            "compression_time_seconds": 12.6887,
+            "decompression_time_seconds": 0.2895,
+            "compression_throughput_mib_s": 15.93,
+            "decompression_throughput_mib_s": 698.14,
+            "compressed_size_bytes": 57187609
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.4.0",
+            "compression_time_seconds": 17.6497,
+            "decompression_time_seconds": 0.2895,
+            "compression_throughput_mib_s": 11.45,
+            "decompression_throughput_mib_s": 698.23,
+            "compressed_size_bytes": 55713192
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.4.0",
+            "compression_time_seconds": 22.4476,
+            "decompression_time_seconds": 0.2946,
+            "compression_throughput_mib_s": 9.0,
+            "decompression_throughput_mib_s": 686.25,
+            "compressed_size_bytes": 54611497
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.4.0",
+            "compression_time_seconds": 28.9896,
+            "decompression_time_seconds": 0.3038,
+            "compression_throughput_mib_s": 6.97,
+            "decompression_throughput_mib_s": 665.27,
+            "compressed_size_bytes": 53692823
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.4.0",
+            "compression_time_seconds": 36.0434,
+            "decompression_time_seconds": 0.3001,
+            "compression_throughput_mib_s": 5.61,
+            "decompression_throughput_mib_s": 673.46,
+            "compressed_size_bytes": 53264409
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.4.0",
+            "compression_time_seconds": 39.4058,
+            "decompression_time_seconds": 0.3157,
+            "compression_throughput_mib_s": 5.13,
+            "decompression_throughput_mib_s": 640.39,
+            "compressed_size_bytes": 52840799
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.4.0",
+            "compression_time_seconds": 45.8079,
+            "decompression_time_seconds": 0.3313,
+            "compression_throughput_mib_s": 4.41,
+            "decompression_throughput_mib_s": 610.17,
+            "compressed_size_bytes": 52743344
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.4.0",
+            "compression_time_seconds": 51.3237,
+            "decompression_time_seconds": 0.3458,
+            "compression_throughput_mib_s": 3.94,
+            "decompression_throughput_mib_s": 584.54,
+            "compressed_size_bytes": 52741189
+        },
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.4.5",
+            "compression_time_seconds": 0.4035,
+            "decompression_time_seconds": 0.2577,
+            "compression_throughput_mib_s": 500.92,
+            "decompression_throughput_mib_s": 784.53,
+            "compressed_size_bytes": 73564547
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.4.5",
+            "compression_time_seconds": 0.4641,
+            "decompression_time_seconds": 0.2718,
+            "compression_throughput_mib_s": 435.54,
+            "decompression_throughput_mib_s": 743.6,
+            "compressed_size_bytes": 69684827
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.4.5",
+            "compression_time_seconds": 0.6044,
+            "decompression_time_seconds": 0.2768,
+            "compression_throughput_mib_s": 334.45,
+            "decompression_throughput_mib_s": 730.18,
+            "compressed_size_bytes": 66713493
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.4.5",
+            "compression_time_seconds": 0.7219,
+            "decompression_time_seconds": 0.2739,
+            "compression_throughput_mib_s": 280.01,
+            "decompression_throughput_mib_s": 738.01,
+            "compressed_size_bytes": 65572952
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.4.5",
+            "compression_time_seconds": 1.1469,
+            "decompression_time_seconds": 0.2739,
+            "compression_throughput_mib_s": 176.25,
+            "decompression_throughput_mib_s": 738.0,
+            "compressed_size_bytes": 64051169
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.4.5",
+            "compression_time_seconds": 1.4382,
+            "decompression_time_seconds": 0.2745,
+            "compression_throughput_mib_s": 140.55,
+            "decompression_throughput_mib_s": 736.34,
+            "compressed_size_bytes": 62966492
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.4.5",
+            "compression_time_seconds": 1.9687,
+            "decompression_time_seconds": 0.2649,
+            "compression_throughput_mib_s": 102.68,
+            "decompression_throughput_mib_s": 763.05,
+            "compressed_size_bytes": 61424796
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.4.5",
+            "compression_time_seconds": 2.4739,
+            "decompression_time_seconds": 0.2656,
+            "compression_throughput_mib_s": 81.71,
+            "decompression_throughput_mib_s": 761.14,
+            "compressed_size_bytes": 60805534
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.4.5",
+            "compression_time_seconds": 3.1517,
+            "decompression_time_seconds": 0.2606,
+            "compression_throughput_mib_s": 64.14,
+            "decompression_throughput_mib_s": 775.76,
+            "compressed_size_bytes": 60243985
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.4.5",
+            "compression_time_seconds": 3.5565,
+            "decompression_time_seconds": 0.2601,
+            "compression_throughput_mib_s": 56.84,
+            "decompression_throughput_mib_s": 777.1,
+            "compressed_size_bytes": 59582224
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.4.5",
+            "compression_time_seconds": 3.8641,
+            "decompression_time_seconds": 0.2596,
+            "compression_throughput_mib_s": 52.31,
+            "decompression_throughput_mib_s": 778.62,
+            "compressed_size_bytes": 59301533
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.4.5",
+            "compression_time_seconds": 6.118,
+            "decompression_time_seconds": 0.262,
+            "compression_throughput_mib_s": 33.04,
+            "decompression_throughput_mib_s": 771.4,
+            "compressed_size_bytes": 58836151
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.4.5",
+            "compression_time_seconds": 9.4768,
+            "decompression_time_seconds": 0.2594,
+            "compression_throughput_mib_s": 21.33,
+            "decompression_throughput_mib_s": 779.19,
+            "compressed_size_bytes": 58139593
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.4.5",
+            "compression_time_seconds": 10.3703,
+            "decompression_time_seconds": 0.2638,
+            "compression_throughput_mib_s": 19.49,
+            "decompression_throughput_mib_s": 766.31,
+            "compressed_size_bytes": 57655088
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.4.5",
+            "compression_time_seconds": 12.9075,
+            "decompression_time_seconds": 0.2634,
+            "compression_throughput_mib_s": 15.66,
+            "decompression_throughput_mib_s": 767.28,
+            "compressed_size_bytes": 57289119
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.4.5",
+            "compression_time_seconds": 18.8326,
+            "decompression_time_seconds": 0.2609,
+            "compression_throughput_mib_s": 10.73,
+            "decompression_throughput_mib_s": 774.84,
+            "compressed_size_bytes": 55732102
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.4.5",
+            "compression_time_seconds": 23.5403,
+            "decompression_time_seconds": 0.2639,
+            "compression_throughput_mib_s": 8.59,
+            "decompression_throughput_mib_s": 766.04,
+            "compressed_size_bytes": 54628187
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.4.5",
+            "compression_time_seconds": 28.9106,
+            "decompression_time_seconds": 0.2732,
+            "compression_throughput_mib_s": 6.99,
+            "decompression_throughput_mib_s": 739.91,
+            "compressed_size_bytes": 53712049
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.4.5",
+            "compression_time_seconds": 38.449,
+            "decompression_time_seconds": 0.2686,
+            "compression_throughput_mib_s": 5.26,
+            "decompression_throughput_mib_s": 752.54,
+            "compressed_size_bytes": 53253525
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.4.5",
+            "compression_time_seconds": 40.7852,
+            "decompression_time_seconds": 0.2923,
+            "compression_throughput_mib_s": 4.96,
+            "decompression_throughput_mib_s": 691.53,
+            "compressed_size_bytes": 52850726
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.4.5",
+            "compression_time_seconds": 43.6235,
+            "decompression_time_seconds": 0.311,
+            "compression_throughput_mib_s": 4.63,
+            "decompression_throughput_mib_s": 650.0,
+            "compressed_size_bytes": 52743909
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.4.5",
+            "compression_time_seconds": 49.187,
+            "decompression_time_seconds": 0.3322,
+            "compression_throughput_mib_s": 4.11,
+            "decompression_throughput_mib_s": 608.57,
+            "compressed_size_bytes": 52741267
+        },
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.5.6",
+            "compression_time_seconds": 0.3899,
+            "decompression_time_seconds": 0.2082,
+            "compression_throughput_mib_s": 518.5,
+            "decompression_throughput_mib_s": 971.04,
+            "compressed_size_bytes": 73492154
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.5.6",
+            "compression_time_seconds": 0.4526,
+            "decompression_time_seconds": 0.221,
+            "compression_throughput_mib_s": 446.63,
+            "decompression_throughput_mib_s": 914.61,
+            "compressed_size_bytes": 69590237
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.5.6",
+            "compression_time_seconds": 0.5987,
+            "decompression_time_seconds": 0.2162,
+            "compression_throughput_mib_s": 337.63,
+            "decompression_throughput_mib_s": 934.75,
+            "compressed_size_bytes": 66555263
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.5.6",
+            "compression_time_seconds": 0.6942,
+            "decompression_time_seconds": 0.2222,
+            "compression_throughput_mib_s": 291.19,
+            "decompression_throughput_mib_s": 909.57,
+            "compressed_size_bytes": 65397751
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.5.6",
+            "compression_time_seconds": 1.1356,
+            "decompression_time_seconds": 0.222,
+            "compression_throughput_mib_s": 177.99,
+            "decompression_throughput_mib_s": 910.53,
+            "compressed_size_bytes": 63103401
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.5.6",
+            "compression_time_seconds": 1.5231,
+            "decompression_time_seconds": 0.2199,
+            "compression_throughput_mib_s": 132.72,
+            "decompression_throughput_mib_s": 919.38,
+            "compressed_size_bytes": 61614488
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.5.6",
+            "compression_time_seconds": 1.6757,
+            "decompression_time_seconds": 0.213,
+            "compression_throughput_mib_s": 120.63,
+            "decompression_throughput_mib_s": 948.89,
+            "compressed_size_bytes": 60671011
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.5.6",
+            "compression_time_seconds": 2.1021,
+            "decompression_time_seconds": 0.2137,
+            "compression_throughput_mib_s": 96.16,
+            "decompression_throughput_mib_s": 945.75,
+            "compressed_size_bytes": 60089913
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.5.6",
+            "compression_time_seconds": 2.1351,
+            "decompression_time_seconds": 0.2123,
+            "compression_throughput_mib_s": 94.67,
+            "decompression_throughput_mib_s": 952.19,
+            "compressed_size_bytes": 59444066
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.5.6",
+            "compression_time_seconds": 2.7675,
+            "decompression_time_seconds": 0.2136,
+            "compression_throughput_mib_s": 73.04,
+            "decompression_throughput_mib_s": 946.36,
+            "compressed_size_bytes": 58757995
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.5.6",
+            "compression_time_seconds": 3.6761,
+            "decompression_time_seconds": 0.2099,
+            "compression_throughput_mib_s": 54.99,
+            "decompression_throughput_mib_s": 963.06,
+            "compressed_size_bytes": 58349624
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.5.6",
+            "compression_time_seconds": 3.8051,
+            "decompression_time_seconds": 0.2126,
+            "compression_throughput_mib_s": 53.12,
+            "decompression_throughput_mib_s": 950.72,
+            "compressed_size_bytes": 58297371
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.5.6",
+            "compression_time_seconds": 8.3436,
+            "decompression_time_seconds": 0.2089,
+            "compression_throughput_mib_s": 24.23,
+            "decompression_throughput_mib_s": 967.73,
+            "compressed_size_bytes": 58061114
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.5.6",
+            "compression_time_seconds": 10.2053,
+            "decompression_time_seconds": 0.2093,
+            "compression_throughput_mib_s": 19.81,
+            "decompression_throughput_mib_s": 965.6,
+            "compressed_size_bytes": 57656315
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.5.6",
+            "compression_time_seconds": 12.4967,
+            "decompression_time_seconds": 0.2077,
+            "compression_throughput_mib_s": 16.18,
+            "decompression_throughput_mib_s": 973.29,
+            "compressed_size_bytes": 57290543
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.5.6",
+            "compression_time_seconds": 19.1616,
+            "decompression_time_seconds": 0.2177,
+            "compression_throughput_mib_s": 10.55,
+            "decompression_throughput_mib_s": 928.34,
+            "compressed_size_bytes": 55342018
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.5.6",
+            "compression_time_seconds": 24.0632,
+            "decompression_time_seconds": 0.2157,
+            "compression_throughput_mib_s": 8.4,
+            "decompression_throughput_mib_s": 936.95,
+            "compressed_size_bytes": 54265183
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.5.6",
+            "compression_time_seconds": 30.503,
+            "decompression_time_seconds": 0.2222,
+            "compression_throughput_mib_s": 6.63,
+            "decompression_throughput_mib_s": 909.63,
+            "compressed_size_bytes": 53348825
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.5.6",
+            "compression_time_seconds": 40.7333,
+            "decompression_time_seconds": 0.2345,
+            "compression_throughput_mib_s": 4.96,
+            "decompression_throughput_mib_s": 862.12,
+            "compressed_size_bytes": 52877643
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.5.6",
+            "compression_time_seconds": 44.0615,
+            "decompression_time_seconds": 0.2347,
+            "compression_throughput_mib_s": 4.59,
+            "decompression_throughput_mib_s": 861.13,
+            "compressed_size_bytes": 52456009
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.5.6",
+            "compression_time_seconds": 48.7244,
+            "decompression_time_seconds": 0.2454,
+            "compression_throughput_mib_s": 4.15,
+            "decompression_throughput_mib_s": 823.77,
+            "compressed_size_bytes": 52343874
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.5.6",
+            "compression_time_seconds": 56.9682,
+            "decompression_time_seconds": 0.273,
+            "compression_throughput_mib_s": 3.55,
+            "decompression_throughput_mib_s": 740.43,
+            "compressed_size_bytes": 52326290
+        },
+        {
+            "method": "zstd",
+            "level": 1,
+            "version": "1.5.7",
+            "compression_time_seconds": 0.395,
+            "decompression_time_seconds": 0.2069,
+            "compression_throughput_mib_s": 511.79,
+            "decompression_throughput_mib_s": 976.93,
+            "compressed_size_bytes": 73292844
+        },
+        {
+            "method": "zstd",
+            "level": 2,
+            "version": "1.5.7",
+            "compression_time_seconds": 0.4531,
+            "decompression_time_seconds": 0.2166,
+            "compression_throughput_mib_s": 446.15,
+            "decompression_throughput_mib_s": 933.32,
+            "compressed_size_bytes": 69414795
+        },
+        {
+            "method": "zstd",
+            "level": 3,
+            "version": "1.5.7",
+            "compression_time_seconds": 0.6026,
+            "decompression_time_seconds": 0.2194,
+            "compression_throughput_mib_s": 335.43,
+            "decompression_throughput_mib_s": 921.45,
+            "compressed_size_bytes": 66217794
+        },
+        {
+            "method": "zstd",
+            "level": 4,
+            "version": "1.5.7",
+            "compression_time_seconds": 0.6748,
+            "decompression_time_seconds": 0.2319,
+            "compression_throughput_mib_s": 299.55,
+            "decompression_throughput_mib_s": 871.8,
+            "compressed_size_bytes": 65074113
+        },
+        {
+            "method": "zstd",
+            "level": 5,
+            "version": "1.5.7",
+            "compression_time_seconds": 1.1523,
+            "decompression_time_seconds": 0.225,
+            "compression_throughput_mib_s": 175.42,
+            "decompression_throughput_mib_s": 898.55,
+            "compressed_size_bytes": 62847239
+        },
+        {
+            "method": "zstd",
+            "level": 6,
+            "version": "1.5.7",
+            "compression_time_seconds": 1.511,
+            "decompression_time_seconds": 0.2179,
+            "compression_throughput_mib_s": 133.78,
+            "decompression_throughput_mib_s": 927.55,
+            "compressed_size_bytes": 61350583
+        },
+        {
+            "method": "zstd",
+            "level": 7,
+            "version": "1.5.7",
+            "compression_time_seconds": 1.6879,
+            "decompression_time_seconds": 0.2215,
+            "compression_throughput_mib_s": 119.76,
+            "decompression_throughput_mib_s": 912.49,
+            "compressed_size_bytes": 60416638
+        },
+        {
+            "method": "zstd",
+            "level": 8,
+            "version": "1.5.7",
+            "compression_time_seconds": 2.1161,
+            "decompression_time_seconds": 0.2141,
+            "compression_throughput_mib_s": 95.52,
+            "decompression_throughput_mib_s": 944.18,
+            "compressed_size_bytes": 59816893
+        },
+        {
+            "method": "zstd",
+            "level": 9,
+            "version": "1.5.7",
+            "compression_time_seconds": 2.1615,
+            "decompression_time_seconds": 0.2147,
+            "compression_throughput_mib_s": 93.52,
+            "decompression_throughput_mib_s": 941.43,
+            "compressed_size_bytes": 59179363
+        },
+        {
+            "method": "zstd",
+            "level": 10,
+            "version": "1.5.7",
+            "compression_time_seconds": 2.7714,
+            "decompression_time_seconds": 0.2167,
+            "compression_throughput_mib_s": 72.94,
+            "decompression_throughput_mib_s": 932.89,
+            "compressed_size_bytes": 58498041
+        },
+        {
+            "method": "zstd",
+            "level": 11,
+            "version": "1.5.7",
+            "compression_time_seconds": 3.7344,
+            "decompression_time_seconds": 0.216,
+            "compression_throughput_mib_s": 54.13,
+            "decompression_throughput_mib_s": 935.98,
+            "compressed_size_bytes": 58091670
+        },
+        {
+            "method": "zstd",
+            "level": 12,
+            "version": "1.5.7",
+            "compression_time_seconds": 3.8443,
+            "decompression_time_seconds": 0.2206,
+            "compression_throughput_mib_s": 52.58,
+            "decompression_throughput_mib_s": 916.29,
+            "compressed_size_bytes": 58039939
+        },
+        {
+            "method": "zstd",
+            "level": 13,
+            "version": "1.5.7",
+            "compression_time_seconds": 8.3344,
+            "decompression_time_seconds": 0.2134,
+            "compression_throughput_mib_s": 24.25,
+            "decompression_throughput_mib_s": 947.37,
+            "compressed_size_bytes": 57800737
+        },
+        {
+            "method": "zstd",
+            "level": 14,
+            "version": "1.5.7",
+            "compression_time_seconds": 10.1611,
+            "decompression_time_seconds": 0.2147,
+            "compression_throughput_mib_s": 19.89,
+            "decompression_throughput_mib_s": 941.39,
+            "compressed_size_bytes": 57396485
+        },
+        {
+            "method": "zstd",
+            "level": 15,
+            "version": "1.5.7",
+            "compression_time_seconds": 12.3726,
+            "decompression_time_seconds": 0.2132,
+            "compression_throughput_mib_s": 16.34,
+            "decompression_throughput_mib_s": 948.31,
+            "compressed_size_bytes": 57031256
+        },
+        {
+            "method": "zstd",
+            "level": 16,
+            "version": "1.5.7",
+            "compression_time_seconds": 18.8007,
+            "decompression_time_seconds": 0.2159,
+            "compression_throughput_mib_s": 10.75,
+            "decompression_throughput_mib_s": 936.2,
+            "compressed_size_bytes": 55304621
+        },
+        {
+            "method": "zstd",
+            "level": 17,
+            "version": "1.5.7",
+            "compression_time_seconds": 23.4602,
+            "decompression_time_seconds": 0.2201,
+            "compression_throughput_mib_s": 8.62,
+            "decompression_throughput_mib_s": 918.43,
+            "compressed_size_bytes": 54233772
+        },
+        {
+            "method": "zstd",
+            "level": 18,
+            "version": "1.5.7",
+            "compression_time_seconds": 30.7019,
+            "decompression_time_seconds": 0.2228,
+            "compression_throughput_mib_s": 6.58,
+            "decompression_throughput_mib_s": 907.19,
+            "compressed_size_bytes": 53313915
+        },
+        {
+            "method": "zstd",
+            "level": 19,
+            "version": "1.5.7",
+            "compression_time_seconds": 40.5685,
+            "decompression_time_seconds": 0.2274,
+            "compression_throughput_mib_s": 4.98,
+            "decompression_throughput_mib_s": 888.73,
+            "compressed_size_bytes": 52840247
+        },
+        {
+            "method": "zstd",
+            "level": 20,
+            "version": "1.5.7",
+            "compression_time_seconds": 44.0165,
+            "decompression_time_seconds": 0.24,
+            "compression_throughput_mib_s": 4.59,
+            "decompression_throughput_mib_s": 842.24,
+            "compressed_size_bytes": 52421548
+        },
+        {
+            "method": "zstd",
+            "level": 21,
+            "version": "1.5.7",
+            "compression_time_seconds": 48.4565,
+            "decompression_time_seconds": 0.251,
+            "compression_throughput_mib_s": 4.17,
+            "decompression_throughput_mib_s": 805.21,
+            "compressed_size_bytes": 52309692
+        },
+        {
+            "method": "zstd",
+            "level": 22,
+            "version": "1.5.7",
+            "compression_time_seconds": 60.1026,
+            "decompression_time_seconds": 0.2702,
+            "compression_throughput_mib_s": 3.36,
+            "decompression_throughput_mib_s": 747.99,
+            "compressed_size_bytes": 52289175
+        }
+    ]
+}
