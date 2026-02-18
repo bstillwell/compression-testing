@@ -2,7 +2,7 @@
     "metadata": {
         "timestamp": "2026-02-13 02:13:19",
         "platform": "Linux-6.8.0-1040-raspi-aarch64-with-glibc2.39",
-        "cpu_model": "Broadcom BCM2712",
+        "cpu_model": "Raspberry Pi 5",
         "original_file_size_bytes": 211957760
     },
     "results": [
