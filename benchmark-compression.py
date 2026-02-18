@@ -113,12 +113,12 @@ def run_cli_test(name, bin_path, data, level=None):
 
     print(f"--> Testing {method_label}...", end='', flush=True)
 
-    # 1. Compression
+    # Compression
     if level is not None:
         comp_cmd = [bin_path, "-c", f"-{level}"]
 
-        if name == "xz":
-            # Make sure xz uses a single thread
+        if name in ["lz4", "xz"]:
+            # Make sure these algorithms use a single thread
             comp_cmd.extend(["-T1"])
         elif name == "zstd":
             # Make sure zstd uses a single thread (when version >= 1.1.3)
@@ -143,7 +143,7 @@ def run_cli_test(name, bin_path, data, level=None):
     compressed_data = proc.stdout
     compressed_size = len(compressed_data)
 
-    # 2. Decompression
+    # Decompression
     decomp_cmd = [bin_path, "-d", "-c"]
     start = time.perf_counter()
     try:
@@ -153,7 +153,7 @@ def run_cli_test(name, bin_path, data, level=None):
         return None
     decomp_time = time.perf_counter() - start
 
-    # 3. Validation & Stats
+    # Validation & Stats
     if len(proc.stdout) != original_size:
         print(f"\r\n[Error] {method_label} integrity check failed!")
         return None
