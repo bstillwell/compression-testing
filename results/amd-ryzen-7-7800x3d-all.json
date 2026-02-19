@@ -317,6 +317,46 @@
             "compressed_size_bytes": 67652215
         },
         {
+            "method": "igzip",
+            "level": 0,
+            "version": "2.31.1",
+            "compression_time_seconds": 0.5323,
+            "decompression_time_seconds": 0.4453,
+            "compression_throughput_mib_s": 379.77,
+            "decompression_throughput_mib_s": 453.89,
+            "compressed_size_bytes": 87551565
+        },
+        {
+            "method": "igzip",
+            "level": 1,
+            "version": "2.31.1",
+            "compression_time_seconds": 0.5194,
+            "decompression_time_seconds": 0.4156,
+            "compression_throughput_mib_s": 389.19,
+            "decompression_throughput_mib_s": 486.36,
+            "compressed_size_bytes": 78106086
+        },
+        {
+            "method": "igzip",
+            "level": 2,
+            "version": "2.31.1",
+            "compression_time_seconds": 0.5419,
+            "decompression_time_seconds": 0.4131,
+            "compression_throughput_mib_s": 372.99,
+            "decompression_throughput_mib_s": 489.36,
+            "compressed_size_bytes": 76572271
+        },
+        {
+            "method": "igzip",
+            "level": 3,
+            "version": "2.31.1",
+            "compression_time_seconds": 0.783,
+            "decompression_time_seconds": 0.4008,
+            "compression_throughput_mib_s": 258.15,
+            "decompression_throughput_mib_s": 504.3,
+            "compressed_size_bytes": 75093536
+        },
+        {
             "method": "bzip2",
             "level": 1,
             "version": "1.0.8",
