@@ -18,6 +18,7 @@ MEBIBYTE = 1024 * 1024
 # CLI Tool mapping
 COMMANDS = {
     "gzip": "gzip",
+    "igzip": "igzip",
     "bzip2": "bzip2",
     "xz": "xz",
     "zstd": "zstd",
@@ -75,6 +76,9 @@ def get_tool_version(name, bin_path):
         # Apple gzip 475
         "gzip": r"(.*gzip [\d\.]+)",
 
+        # igzip command line interface 2.31.1
+        "igzip": r"igzip .* (\d+\.\d+\.\d+)",
+
         # *** LZ4 command line interface 64-bits v1.9.4, by Yann Collet ***
         # *** lz4 v1.10.0 64-bit multithread, by Yann Collet ***
         "lz4": r" v(\d+\.\d+\.\d+)",
@@ -117,7 +121,7 @@ def run_cli_test(name, bin_path, data, level=None):
     if level is not None:
         comp_cmd = [bin_path, "-c", f"-{level}"]
 
-        if name == "xz":
+        if name in ["igzip", "xz"]:
             # Make sure xz uses a single thread
             comp_cmd.extend(["-T1"])
         elif name == "lz4":
@@ -230,6 +234,7 @@ def main():
     # --- Generic Algorithm Loops ---
     standard_loops = [
         ("gzip", "Gzip", range(1, 10)),
+        ("igzip", "igzip", range(0, 4)),
         ("bzip2", "Bzip2", range(1, 10)),
         ("xz", "XZ", range(0, 10)),
         ("lz4", "LZ4", range(1, 13)),
