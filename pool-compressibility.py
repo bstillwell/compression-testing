@@ -58,8 +58,16 @@ objects_checked = 0
 total_raw_bytes = 0
 total_compressed_bytes = 0
 
-print(f"{'Elapsed':<10} | {'Objects':<10} | {'Data Scanned':<15} | {'Avg Ratio':<10}")
-print("-" * 55)
+# Fixed column widths
+W_ELAPSED = 10
+W_OBJECTS = 10
+W_DATA = 15
+W_RATIO = 12
+W_FACTOR = 10
+
+# Print Header
+print(f"{'Elapsed':<{W_ELAPSED}} | {'Objects':<{W_OBJECTS}} | {'Data Scanned':<{W_DATA}} | {'Avg Ratio':<{W_RATIO}} | {'Factor':<{W_FACTOR}}")
+print("-" * (W_ELAPSED + W_OBJECTS + W_DATA + W_RATIO + W_FACTOR + 12))
 
 while True:
     now = time.time()
@@ -76,10 +84,23 @@ while True:
         # Calculate current running average
         if total_raw_bytes > 0:
             current_ratio = float(total_compressed_bytes) / float(total_raw_bytes)
+            # Avoid division by zero
+            if total_compressed_bytes > 0:
+                current_factor = float(total_raw_bytes) / float(total_compressed_bytes)
+            else:
+                current_factor = 0.0
         else:
             current_ratio = 1.0
+            current_factor = 1.0
 
-        print(f"{elapsed}s".ljust(10) + f" | {objects_checked:<10} | {total_raw_bytes:<15} | {current_ratio:.2%}")
+        # Format values as strings first to ensure clean padding
+        elapsed_str = f"{elapsed}s"
+        ratio_str = f"{current_ratio:.2%}"
+        factor_str = f"{current_factor:.2f}x"
+
+        # Print Row
+        print(f"{elapsed_str:<{W_ELAPSED}} | {objects_checked:<{W_OBJECTS}} | {total_raw_bytes:<{W_DATA}} | {ratio_str:<{W_RATIO}} | {factor_str:<{W_FACTOR}}")
+
         last_print_time = now
 
     try:
@@ -121,9 +142,17 @@ print(f"Objects checked: {objects_checked}")
 
 if total_raw_bytes > 0:
     avg_ratio = float(total_compressed_bytes) / float(total_raw_bytes)
+
+    if total_compressed_bytes > 0:
+        avg_factor = float(total_raw_bytes) / float(total_compressed_bytes)
+    else:
+        avg_factor = 0.0
+
     savings = 100 - (avg_ratio * 100)
+
     print(f"Total Raw Bytes: {total_raw_bytes}")
     print(f"Global Compression Ratio: {avg_ratio:.2%}")
+    print(f"Compression Factor: {avg_factor:.2f}x")
     print(f"Potential Space Savings: {savings:.2f}%")
 else:
     print("No data processed.")
