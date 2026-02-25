@@ -4,10 +4,31 @@ import rados
 import sys
 import zlib
 import time
+import argparse
 
-# Configuration
-POOL_NAME = 'default.rgw.buckets.data'
+# Defaults
+DEFAULT_POOL = 'default.rgw.buckets.data'
 DURATION_SECONDS = 30
+
+# Parse Command Line Arguments
+parser = argparse.ArgumentParser(description="Estimate compression savings for a Ceph pool.")
+parser.add_argument(
+    '-p', '--pool',
+    type=str,
+    default=DEFAULT_POOL,
+    help=f"Name of the pool to check (default: {DEFAULT_POOL})"
+)
+parser.add_argument(
+    '-d', '--duration',
+    type=int,
+    default=DURATION_SECONDS,
+    help=f"Duration in seconds to run the check (default: {DURATION_SECONDS})"
+)
+
+args = parser.parse_args()
+
+POOL_NAME = args.pool
+DURATION_SECONDS = args.duration
 
 try:
     cluster = rados.Rados(conffile='/etc/ceph/ceph.conf')
@@ -66,6 +87,7 @@ while True:
         obj_key = obj_entry.key
 
         try:
+            # Read first 4MB (chunks) to estimate compressibility
             data = ioctx.read(obj_key, length=4*1024*1024)
         except rados.ObjectNotFound:
             continue
